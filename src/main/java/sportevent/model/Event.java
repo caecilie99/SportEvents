@@ -1,10 +1,14 @@
 package sportevent.model;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+
+@Entity
 
 public class Event {
 
+	@Id
+	@GeneratedValue
 	private int id;
 
 	private Date date;
@@ -13,10 +17,11 @@ public class Event {
 
 	private String description;
 
-	private Competition[] competition;
+	@OneToMany(mappedBy = "event")
+	private List<Competition> competition;
 
 	@ManyToOne
-	@JoinColumn(name = "club_id")
-	private Club club;
+	@JoinColumn(name = "Id")
+	private Promoter club;
 
 }

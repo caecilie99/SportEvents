@@ -1,18 +1,27 @@
 package sportevent.model;
+
+import javax.persistence.*;
+
+@Entity
 public class Participant {
 
 	private int id;
-
-	private int registrationid;
-
-	private int competetionid;
 
 	private String lastname;
 
 	private String firstname;
 
-	private Registration registration;
+	private int year;
 
+    @ManyToOne
+    @JoinColumn(name="Id")
+	private Club registration;
+
+    @ManyToMany
 	private Competition[] competition;
+
+    @OneToOne
+    @JoinColumn(name="Id")
+	private AgeGroup ageGroup;
 
 }

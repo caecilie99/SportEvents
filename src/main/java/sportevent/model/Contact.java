@@ -1,6 +1,9 @@
 package sportevent.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 @Entity
 public class Contact {
@@ -9,8 +12,10 @@ public class Contact {
 	@GeneratedValue
 	private int id;
 
+	@Column(nullable = false)
 	private String lastname;
 
+	@Column(nullable = false)
 	private String firstname;
 
 	private String adress;
@@ -19,12 +24,15 @@ public class Contact {
 
 	private String city;
 
+	@Column(nullable = false)
 	private String email;
 
 	private String phone;
 
-	@ManyToOne
-	@JoinColumn(name = "club_id")
-	private Club club;
+	@Column(nullable = false)
+	private String username;
+
+	@Column(nullable = false)
+	private String password;
 
 }
