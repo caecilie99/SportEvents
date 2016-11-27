@@ -1,6 +1,8 @@
 package sportevent.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Competition {
@@ -16,13 +18,17 @@ public class Competition {
 
 	private Double fee;
 
-
-	private Participant[] participant;
+	@OneToMany
+	@JoinColumn(name = "id")
+	private List<Participant> participant = new ArrayList<Participant>();
 
     @ManyToOne
-    @JoinColumn(name = "Id")
+    @JoinColumn(name = "id", insertable = false, updatable = false)
 	private Event event;
 
-	private AgeGroup[] ageGroup;
+
+	@OneToMany
+	@JoinColumn(name = "id")
+	private List<AgeGroup> ageGroup = new ArrayList<AgeGroup>();
 
 }

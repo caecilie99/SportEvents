@@ -21,7 +21,15 @@ public class Promoter{
 	@OneToMany(mappedBy = "promoter")
 	private List<Event> event;
 
-	@OneToMany(mappedBy = "promoter")
+	@OneToMany
 	private List<Contact> contact;
 
+	public Promoter() {
+	}
+
+	public Promoter(String name, String description, String url) {
+		this.name = name;
+		this.description = description;
+		this.url = url;
+	}
 }

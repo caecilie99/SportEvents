@@ -5,6 +5,8 @@ import javax.persistence.*;
 @Entity
 public class Participant {
 
+	@Id
+	@GeneratedValue
 	private int id;
 
 	private String lastname;
@@ -14,14 +16,25 @@ public class Participant {
 	private int year;
 
     @ManyToOne
-    @JoinColumn(name="Id")
-	private Club registration;
+    @JoinColumn(name="id", insertable = false, updatable = false)
+	private Club club;
 
-    @ManyToMany
-	private Competition[] competition;
+/*    @ManyToMany
+	private Competition[] competition;*/
 
     @OneToOne
-    @JoinColumn(name="Id")
+    @JoinColumn(name="id")
 	private AgeGroup ageGroup;
+
+	public Participant() {
+	}
+
+	public Participant(String lastname, String firstname, int year, Club club) {
+		this.lastname = lastname;
+		this.firstname = firstname;
+		this.year = year;
+		this.club = club;
+	}
+
 
 }

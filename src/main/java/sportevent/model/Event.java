@@ -21,7 +21,7 @@ public class Event {
 	private List<Competition> competition;
 
 	@ManyToOne
-	@JoinColumn(name = "Id")
-	private Promoter club;
+	@JoinColumn(name = "id", insertable = false, updatable = false)
+	private Promoter promoter;
 
 }
