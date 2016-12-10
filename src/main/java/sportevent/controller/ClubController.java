@@ -1,13 +1,14 @@
 package sportevent.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import sportevent.dao.ClubDao;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import sportevent.dao.ClubRepository;
 import sportevent.model.Club;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ import java.util.List;
 public class ClubController {
 
     @Autowired
-    private ClubDao clubDAO;
+    private ClubRepository clubDAO;
 
     @RequestMapping(path = "/all", method = RequestMethod.GET)
     public List<Club> readAllClubs(){
@@ -26,12 +27,21 @@ public class ClubController {
 
     }
 
-    @RequestMapping(path = "{name}/create", method = RequestMethod.POST)
-    public void createClub(@PathVariable("name") String name){
-        Club newClub = new Club(name);
-        clubDAO.save(newClub);
+    @RequestMapping(path = "{name}", method = RequestMethod.POST)
+    public ResponseEntity<?> createClub(@PathVariable("name") String name){
+        Club savedClub = clubDAO.save(new Club(name));
+        if (savedClub!=null){
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(savedClub.getId()).toUri();
+            return ResponseEntity.created(location).build();
+        } else
+            return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
+    @RequestMapping(path = "{id}", method = RequestMethod.PUT)
+    public void createClub(@PathVariable("id") Long id, @RequestBody Club updateClub){
+        updateClub = clubDAO.save(updateClub);
+    }
 
 }
