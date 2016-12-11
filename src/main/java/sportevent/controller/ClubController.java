@@ -19,17 +19,17 @@ import java.util.List;
 public class ClubController {
 
     @Autowired
-    private ClubRepository clubDAO;
+    private ClubRepository clubRepository;
 
     @RequestMapping(path = "/all", method = RequestMethod.GET)
     public List<Club> readAllClubs(){
-        return clubDAO.findAll();
+        return clubRepository.findAll();
 
     }
 
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
     public ResponseEntity<?> createClub(@PathVariable("name") String name){
-        Club savedClub = clubDAO.save(new Club(name));
+        Club savedClub = clubRepository.save(new Club(name));
         if (savedClub!=null){
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest().path("/{id}")
@@ -40,8 +40,8 @@ public class ClubController {
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public void createClub(@PathVariable("id") Long id, @RequestBody Club updateClub){
-        updateClub = clubDAO.save(updateClub);
+    public void updateClub(@PathVariable("id") Long id, @RequestBody Club updateClub){
+        updateClub = clubRepository.save(updateClub);
     }
 
 }

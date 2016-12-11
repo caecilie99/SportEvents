@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-public class RESTControllerTest {
+public class ClubControllerRESTTest {
 
     private static final String club1 = "VfL Hintertupfingen";
     private static final String club2 = "TuS Lahme Enten";
@@ -86,8 +87,9 @@ public class RESTControllerTest {
     public void createAndUpdateClub() throws Exception {
         // create new club
 
-        this.mockMvc.perform(post("/club/" + club1))
-                .andExpect(status().isCreated());
+        this.mockMvc.perform(post("/club/{name}", club1))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", containsString("http://localhost/club/")));
         Club newClub = clubRepository.findByName(club1);
         newClub.setName(club2);
 
