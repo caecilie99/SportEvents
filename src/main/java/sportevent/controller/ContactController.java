@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(path="/club/{id}/contact")
-public class contactController {
+public class ContactController {
 
     @Autowired
     private ContactRepository contactRepository;
