@@ -6,6 +6,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 
+/**
+ * Contact details, used for promoter and club
+ *
+ * @author Birgit Reiter
+ * @version 1.0
+ */
+
 @Entity
 public class Contact implements Serializable {
 

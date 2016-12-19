@@ -7,6 +7,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clubs can sign in participants for events from promoter clubs
+ *
+ * @author Birgit Reiter
+ * @version 1.0
+ */
+
 @Entity
 public class Club implements Serializable {
 

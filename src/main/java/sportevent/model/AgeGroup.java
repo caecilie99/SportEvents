@@ -2,6 +2,13 @@ package sportevent.model;
 
 import javax.persistence.*;
 
+/**
+ * AgeGroups are definded by fromYear an toYear and could be assigned to competitions
+ *
+ * @author Birgit Reiter
+ * @version 1.0
+ */
+
 @Entity
 public class AgeGroup {
 

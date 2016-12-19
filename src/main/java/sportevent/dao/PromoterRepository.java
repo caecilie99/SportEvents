@@ -7,8 +7,12 @@ import sportevent.model.Promoter;
 import java.util.List;
 
 /**
- * Created by Birgit on 12.12.2016.
+ * Repository for events
+ *
+ * @author Birgit Reiter
+ * @version 1.0
  */
+
 @Repository
 public interface PromoterRepository extends CrudRepository<Promoter, Long> {
 

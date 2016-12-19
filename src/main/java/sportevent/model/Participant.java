@@ -2,6 +2,13 @@ package sportevent.model;
 
 import javax.persistence.*;
 
+/**
+ * Participants can attend to a competition
+ *
+ * @author Birgit Reiter
+ * @version 1.0
+ */
+
 @Entity
 public class Participant {
 
@@ -16,14 +23,14 @@ public class Participant {
 	private int year;
 
     @ManyToOne
-    @JoinColumn(name="id", insertable = false, updatable = false)
+    @JoinColumn(name="club_id", insertable = false, updatable = false)
 	private Club club;
 
 /*    @ManyToMany
 	private Competition[] competition;*/
 
     @OneToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="agegroup_id")
 	private AgeGroup ageGroup;
 
 	public Participant() {

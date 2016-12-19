@@ -12,7 +12,10 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * Created by Birgit on 21.11.2016.
+ * REST controller for promoter
+ *
+ * @author Birgit Reiter
+ * @version 1.0
  */
 @RestController
 @RequestMapping(path="/promoter")

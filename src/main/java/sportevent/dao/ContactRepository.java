@@ -6,7 +6,10 @@ import sportevent.model.Contact;
 import java.util.List;
 
 /**
- * Created by Birgit on 10.12.2016.
+ * Repository for contacts
+ *
+ * @author Birgit Reiter
+ * @version 1.0
  */
 public interface ContactRepository extends CrudRepository<Contact, Long> {
 

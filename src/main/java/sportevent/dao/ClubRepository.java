@@ -8,7 +8,10 @@ import sportevent.model.Club;
 import java.util.List;
 
 /**
- * Created by Birgit on 21.11.2016.
+ * Repository for clubs
+ *
+ * @author Birgit Reiter
+ * @version 1.0
  */
 @Repository
 public interface ClubRepository extends CrudRepository<Club, Long> {

@@ -9,7 +9,7 @@ public class Competition {
 
     @Id
     @GeneratedValue
-	private int id;
+	private Long id;
 
     @Column(nullable = false)
 	private String name;
@@ -17,18 +17,18 @@ public class Competition {
 	private String description;
 
 	private Double fee;
-
+/*
 	@OneToMany
-	@JoinColumn(name = "id")
-	private List<Participant> participant = new ArrayList<Participant>();
+	@JoinColumn(name = "participant_id")
+	private List<Participant> participant = new ArrayList<Participant>();*/
 
     @ManyToOne
-    @JoinColumn(name = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "event_id")
 	private Event event;
 
-
+/*
 	@OneToMany
 	@JoinColumn(name = "id")
-	private List<AgeGroup> ageGroup = new ArrayList<AgeGroup>();
+	private List<AgeGroup> ageGroup = new ArrayList<AgeGroup>();*/
 
 }

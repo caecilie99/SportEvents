@@ -5,6 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Promoter can create and manage events
+ *
+ * @author Birgit Reiter
+ * @version 1.0
+ */
+
 @Entity
 public class Promoter{
 
@@ -24,10 +31,10 @@ public class Promoter{
 	@JsonIgnore
 	private List<Event> event;
 
-	@OneToMany
+	@OneToOne
 	@JoinColumn(name = "contact_id")
 	@JsonIgnore
-	private List<Contact> contact;
+	private Contact contact;
 
 	public Promoter() {
 	}
