@@ -71,8 +71,12 @@ public class ContactControllerRESTTest {
     public void setup() throws Exception {
         //MockitoAnnotations.initMocks(this);
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
-        this.clubRepository.deleteAll();
 
+        // start with enpty tables
+        this.clubRepository.deleteAll();
+        this.contactRepository.deleteAll();
+
+        // create club and get ID to use for tests
         Club testClub = clubRepository.save(new Club("FC Fitty"));
         assertNotNull(testClub);
         clubID = testClub.getId();

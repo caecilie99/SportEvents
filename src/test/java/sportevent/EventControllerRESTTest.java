@@ -18,12 +18,18 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import sportevent.dao.ClubRepository;
 import sportevent.dao.ContactRepository;
+import sportevent.dao.EventRepository;
+import sportevent.dao.PromoterRepository;
 import sportevent.model.Club;
 import sportevent.model.Contact;
+import sportevent.model.Event;
+import sportevent.model.Promoter;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
@@ -34,11 +40,14 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-public class ClubControllerRESTTest {
+public class EventControllerRESTTest {
 
-    private static final String club1 = "VfL Hintertupfingen";
-    private static final String club2 = "TuS Lahme Enten";
-    private static final String club3 = "TSV Klumpfuss";
+    private Promoter testPromoter;
+
+    private static final String club1 = "Die Wellness-Oase";
+
+    private static final String event1 = "Lange Saunanacht";
+    private static final String event2 = "24-h Lauf";
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
@@ -48,14 +57,13 @@ public class ClubControllerRESTTest {
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
     @Autowired
-    private ClubRepository clubRepository;
+    private PromoterRepository promoterRepository;
 
     @Autowired
-    private ContactRepository contactRepository;
+    private EventRepository eventRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
-
 
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {
@@ -75,38 +83,56 @@ public class ClubControllerRESTTest {
         //MockitoAnnotations.initMocks(this);
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
 
-        // start with empty table
-        this.clubRepository.deleteAll();
+        // start with empty tables
+        this.eventRepository.deleteAll();
+        this.promoterRepository.deleteAll();
+
+        // create club and get ID to use for tests
+        testPromoter = promoterRepository.save(new Promoter(club1, "desricption of "+club1, "www.urlclub1.de"));
+        assertNotNull(testPromoter);
     }
 
     @Test
-    public void createNewClub() throws Exception {
-        this.mockMvc.perform(post("/club/" + club1))
+    public void createNewEvent() throws Exception {
+        this.mockMvc.perform(post("/event/{name}/{promoterid}", event1, testPromoter.getId())
+                .param("date", Long.toString(new Date().getTime()))
+                .param("description", "nice event"))
                 .andExpect(status().isCreated());
+
+        // get events for promoter
+        List<Event> promoterEvents = eventRepository.findByPromoter(testPromoter);
+        assertNotNull(promoterEvents);
+
+        // check, if list contains our new event
+        Event firstEvent = promoterEvents.get(0);
+        assertNotNull(firstEvent);
+        assertEquals(firstEvent.getName(), event1);
     }
 
     @Test
-    public void createAndUpdateClub() throws Exception {
+    public void createAndUpdateEvent() throws Exception {
+        this.mockMvc.perform(post("/event/{name}/{promoterid}", event1, testPromoter.getId())
+                .param("date", Long.toString(new Date().getTime()))
+                .param("description", "nice event"))
+                .andExpect(status().isCreated());
 
-        // create new club
-        this.mockMvc.perform(post("/club/{name}", club1))
-                .andExpect(status().isCreated())
-                .andExpect(header().string("location", containsString("http://localhost/club/")));
+        // get events for promoter
+        List<Event> promoterEvents = eventRepository.findByPromoter(testPromoter);
+        assertNotNull(promoterEvents);
 
-        // get club from repository
-        Club newClub = clubRepository.findByName(club1);
-        assertNotNull(newClub);
+        // check, if list contains our new event
+        Event firstEvent = promoterEvents.get(0);
+        assertNotNull(firstEvent);
+        assertEquals(firstEvent.getName(), event1);
 
-        // change name of club
-        newClub.setName(club2);
+        firstEvent.setName(event2);
+        firstEvent.setDescription("description for "+event2);
 
         mockMvc.perform(
-                put("/club/{id}", newClub.getId())
+                put("/event/{id}", firstEvent.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(this.json(newClub)))
+                        .content(this.json(firstEvent)))
                 .andExpect(status().isOk());
-
-        assertNotNull(clubRepository.findByName(newClub.getName()));
     }
 
     protected String json(Object o) throws IOException {

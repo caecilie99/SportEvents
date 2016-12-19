@@ -1,4 +1,6 @@
 package sportevent.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +26,7 @@ public class Event {
 	private String description;
 
 	@OneToMany(mappedBy = "event")
+	@JsonIgnore
 	private List<Competition> competition;
 
 	@ManyToOne

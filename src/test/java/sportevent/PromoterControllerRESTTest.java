@@ -16,11 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import sportevent.dao.ClubRepository;
-import sportevent.dao.ContactRepository;
 import sportevent.dao.PromoterRepository;
-import sportevent.model.Club;
-import sportevent.model.Contact;
 import sportevent.model.Promoter;
 
 import java.io.IOException;
@@ -78,27 +74,38 @@ public class PromoterControllerRESTTest {
 
     @Test
     public void createNewClub() throws Exception {
-        this.mockMvc.perform(post("/club/" + club1))
-                .andExpect(status().isCreated());
+        this.mockMvc.perform(post("/promoter/{name}", club1)
+                .param("description", "desricption of"+club1)
+                .param("url",  "www.coolewebsite.de"))
+                .andExpect(status().isCreated())
+                .andExpect(header().string("location", containsString("http://localhost/promoter/")));
+
+        assertNotNull(promoterRepository.findByName(club1));
     }
 
     @Test
     public void createAndUpdateClub() throws Exception {
         // create new club
 
-        this.mockMvc.perform(post("/promoter/{name}", club1)
-                .param("description", "desricption of"+club1)
+        this.mockMvc.perform(post("/promoter/{name}", club3)
+                .param("description", "desricption of"+club3)
                 .param("url",  "www.coolewebsite.de"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", containsString("http://localhost/promoter/")));
-        Promoter newPromoter = promoterRepository.findByName(club1);
+
+        Promoter newPromoter = promoterRepository.findByName(club3);
+        assertNotNull(newPromoter);
+
         newPromoter.setName(club2);
 
         mockMvc.perform(
                 put("/promoter/{id}", newPromoter.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.json(newPromoter)))
-                .andExpect(status().isOk());    }
+                .andExpect(status().isOk());
+        assertNull(promoterRepository.findByName(club3));
+        assertNotNull(promoterRepository.findByName(club2));
+    }
 
     protected String json(Object o) throws IOException {
         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
