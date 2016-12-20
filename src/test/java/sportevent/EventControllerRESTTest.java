@@ -15,13 +15,10 @@ import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
-import sportevent.dao.ClubRepository;
-import sportevent.dao.ContactRepository;
 import sportevent.dao.EventRepository;
 import sportevent.dao.PromoterRepository;
-import sportevent.model.Club;
-import sportevent.model.Contact;
 import sportevent.model.Event;
 import sportevent.model.Promoter;
 
@@ -32,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -42,9 +40,11 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 @WebAppConfiguration
 public class EventControllerRESTTest {
 
-    private Promoter testPromoter;
+    private Promoter testPromoter1Obj;
+    private Promoter testPromoter2Obj;
 
     private static final String club1 = "Die Wellness-Oase";
+    private static final String club2 = "FC Stramme Waden";
 
     private static final String event1 = "Lange Saunanacht";
     private static final String event2 = "24-h Lauf";
@@ -87,20 +87,23 @@ public class EventControllerRESTTest {
         this.eventRepository.deleteAll();
         this.promoterRepository.deleteAll();
 
-        // create club and get ID to use for tests
-        testPromoter = promoterRepository.save(new Promoter(club1, "desricption of "+club1, "www.urlclub1.de"));
-        assertNotNull(testPromoter);
+        // create clubs to use for tests
+        testPromoter1Obj = promoterRepository.save(new Promoter(club1, "desricption of "+club1, "www.urlclub1.de"));
+        assertNotNull(testPromoter1Obj);
+
+        testPromoter2Obj = promoterRepository.save(new Promoter(club2, "desricption of "+club2, "www.urlclub2.de"));
+        assertNotNull(testPromoter2Obj);
     }
 
     @Test
     public void createNewEvent() throws Exception {
-        this.mockMvc.perform(post("/event/{name}/{promoterid}", event1, testPromoter.getId())
+        this.mockMvc.perform(post("/event/{name}", event1).param("promoterid", testPromoter1Obj.getId().toString())
                 .param("date", Long.toString(new Date().getTime()))
                 .param("description", "nice event"))
                 .andExpect(status().isCreated());
 
         // get events for promoter
-        List<Event> promoterEvents = eventRepository.findByPromoter(testPromoter);
+        List<Event> promoterEvents = eventRepository.findByPromoterId(testPromoter1Obj.getId());
         assertNotNull(promoterEvents);
 
         // check, if list contains our new event
@@ -111,13 +114,13 @@ public class EventControllerRESTTest {
 
     @Test
     public void createAndUpdateEvent() throws Exception {
-        this.mockMvc.perform(post("/event/{name}/{promoterid}", event1, testPromoter.getId())
+        this.mockMvc.perform(post("/event/{name}", event1).param("promoterid", testPromoter1Obj.getId().toString())
                 .param("date", Long.toString(new Date().getTime()))
                 .param("description", "nice event"))
                 .andExpect(status().isCreated());
 
         // get events for promoter
-        List<Event> promoterEvents = eventRepository.findByPromoter(testPromoter);
+        List<Event> promoterEvents = eventRepository.findByPromoterId(testPromoter1Obj.getId());
         assertNotNull(promoterEvents);
 
         // check, if list contains our new event
@@ -133,6 +136,64 @@ public class EventControllerRESTTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.json(firstEvent)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void createAndGetEvent() throws Exception {
+        ResultActions result = this.mockMvc.perform(post("/event/{name}", event2)
+                .param("date", Long.toString(new Date().getTime())) // cast to Long because getTime returns long
+                .param("description", "nice event")
+                .param("promoterid", testPromoter1Obj.getId().toString()))
+                .andExpect(status().isCreated());
+
+        // get new location geturned by post
+        String newLocation = result.andReturn().getResponse().getHeader("Location");
+        String returnIdStr = newLocation.substring(newLocation.lastIndexOf("/")+1);
+        Long returnId = Long.parseLong(returnIdStr);
+
+        mockMvc.perform(
+                get("/event/{id}", returnId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("name", is(event2)));
+    }
+
+    @Test
+    public void getAllEvents() throws Exception {
+        // create and save two events
+        Event event1Obj = new Event(new Date(), event1, "some stuff", testPromoter1Obj);
+        assertNotNull(eventRepository.save(event1Obj));
+
+        Event event2Obj = new Event(new Date(), event2, "some hot stuff", testPromoter1Obj);
+        assertNotNull(eventRepository.save(event2Obj));
+
+        mockMvc.perform(get("/event"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+
+    @Test
+    public void getEventsForPromoter() throws Exception {
+        // create and save two events for promoter1
+        Event event1Obj = new Event(new Date(), event1, "some stuff", testPromoter1Obj);
+        assertNotNull(eventRepository.save(event1Obj));
+
+        Event event2Obj = new Event(new Date(), event2, "some hot stuff", testPromoter1Obj);
+        assertNotNull(eventRepository.save(event2Obj));
+
+        // create and save two events for promoter2
+        Event event3Obj = new Event(new Date(), event1, "some stuff", testPromoter2Obj);
+        assertNotNull(eventRepository.save(event3Obj));
+
+        Event event4Obj = new Event(new Date(), event2, "some hot stuff", testPromoter2Obj);
+        assertNotNull(eventRepository.save(event4Obj));
+
+        mockMvc.perform(get("/event").param("promoterid", testPromoter1Obj.getId().toString()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
     protected String json(Object o) throws IOException {

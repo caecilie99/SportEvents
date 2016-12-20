@@ -30,27 +30,32 @@ public class EventController {
     @Autowired
     private PromoterRepository promoterRepository;
 
-    @RequestMapping(path = "/all", method = RequestMethod.GET)
-    public List<Event> readAllClubs(){
-        return eventRepository.findAll();
+    @RequestMapping(path = "", method = RequestMethod.GET)
+    public List<Event> getEvents(@RequestParam(value = "promoterid", required = false) Long promoterid){
+        if (promoterid!=null)
+            return eventRepository.findByPromoterId(promoterid);
+        else
+            return eventRepository.findAll();
 
     }
 
     /**
-     * create new event
+     * create new event and return new location for event, identified by id
+     *
      * @param name
      * @param description
      * @param date
      * @param promoterId
      * @return response result
      */
-    @RequestMapping(path = "{name}/{promoterid}", method = RequestMethod.POST)
-    public ResponseEntity<?> createEvent(@PathVariable("name") String name, @PathVariable("promoterid") Long promoterId, @RequestParam("description") String description, @RequestParam("date") String date){
+    @RequestMapping(path = "{name}", method = RequestMethod.POST)
+    public ResponseEntity<?> createEvent(@PathVariable("name") String name, @RequestParam("promoterid") Long promoterId, @RequestParam("description") String description, @RequestParam("date") String date){
         Promoter eventPromoter = promoterRepository.findById(promoterId);
         Event savedEvent = eventRepository.save(new Event(new Date(Long.parseLong(date)), name, description, eventPromoter));
         if (savedEvent!=null){
+            // Build new path for event and return as new location
             URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest().path("/{id}")
+                    .fromCurrentRequest().replacePath("/event/{id}")
                     .buildAndExpand(savedEvent.getId()).toUri();
             return ResponseEntity.created(location).build();
         } else

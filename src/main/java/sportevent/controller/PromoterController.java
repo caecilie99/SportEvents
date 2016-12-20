@@ -34,8 +34,9 @@ public class PromoterController {
     public ResponseEntity<?> createPromoter(@PathVariable("name") String name, @RequestParam("description") String description, @RequestParam("url") String url){
         Promoter savedPromoter = promoterRepository.save(new Promoter(name, description, url));
         if (savedPromoter!=null){
+            // Build new path for event and return as new location
             URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest().path("/{id}")
+                    .fromCurrentRequest().replacePath("/promoter/{id}")
                     .buildAndExpand(savedPromoter.getId()).toUri();
             return ResponseEntity.created(location).build();
         } else

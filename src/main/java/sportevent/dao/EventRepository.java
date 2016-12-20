@@ -18,7 +18,7 @@ import java.util.List;
 public interface EventRepository extends CrudRepository<Event, Long> {
 
     public List<Event> findAll();
-    public List<Event> findByPromoter(Promoter promoter);
+    public List<Event> findByPromoterId(Long promoterid);
     public Event findById(Long id);
     public Event findByName(String name);
 

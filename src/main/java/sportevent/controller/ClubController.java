@@ -31,8 +31,9 @@ public class ClubController {
     public ResponseEntity<?> createClub(@PathVariable("name") String name){
         Club savedClub = clubRepository.save(new Club(name));
         if (savedClub!=null){
+            // Build new path for event and return as new location
             URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest().path("/{id}")
+                    .fromCurrentRequest().replacePath("/club/{id}")
                     .buildAndExpand(savedClub.getId()).toUri();
             return ResponseEntity.created(location).build();
         } else

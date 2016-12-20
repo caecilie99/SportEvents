@@ -26,6 +26,7 @@ public class ContactController {
     public ResponseEntity<?> createClub(@RequestBody Contact newContact){
         Contact savedContact = contactRepository.save(newContact);
         if (savedContact!=null){
+            // Append new id to request path and return as new location
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest().path("/{id}")
                     .buildAndExpand(savedContact.getId()).toUri();
