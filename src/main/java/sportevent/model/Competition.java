@@ -1,10 +1,14 @@
 package sportevent.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Competitions for events
@@ -15,33 +19,33 @@ import java.util.List;
  *
  */
 @Entity
-public class Competition {
+public class Competition  implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "competition_id")
+    private Long id;
 
     @Column(nullable = false)
-	private String name;
+    private String name;
 
-	private String description;
+    private String description;
 
-	private Double fee;
+    private Double fee;
 
-	@OneToMany
-	@JoinColumn(name = "participant_id")
-    @JsonIgnore
-	private List<Participant> participant = new ArrayList<Participant>();
+/*    @ManyToMany(mappedBy = "competition", fetch = FetchType.LAZY)
+    private List<Participant> participants = new ArrayList<Participant>();*/
 
     @ManyToOne
     @JoinColumn(name = "event_id")
-	private Event event;
+    private Event event;
 
 
-	@OneToMany
-	@JoinColumn(name = "agegroup_id")
+    @OneToMany
+    @JoinColumn(name = "agegroup_id")
     @JsonIgnore
-	private List<AgeGroup> ageGroup = new ArrayList<AgeGroup>();
+    private Set<AgeGroup> ageGroup = new HashSet<AgeGroup>(); // user set to create primary key
 
     public Competition() {
     }
@@ -81,13 +85,13 @@ public class Competition {
         this.fee = fee;
     }
 
-    public List<Participant> getParticipant() {
+/*    public List<Participant> getParticipant() {
         return participant;
     }
 
     public void setParticipant(List<Participant> participant) {
         this.participant = participant;
-    }
+    }*/
 
     public Event getEvent() {
         return event;
@@ -97,11 +101,42 @@ public class Competition {
         this.event = event;
     }
 
-    public List<AgeGroup> getAgeGroup() {
+    public Set<AgeGroup> getAgeGroup() {
         return ageGroup;
     }
 
-    public void setAgeGroup(List<AgeGroup> ageGroup) {
+    public void setAgeGroup(Set<AgeGroup> ageGroup) {
         this.ageGroup = ageGroup;
     }
+
+    /*@Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Competition))
+            return false;
+        Competition other = (Competition) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        return true;
+    }*/
 }

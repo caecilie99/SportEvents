@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * REST controller for promoter
+ * REST controller for competitions
  *
  * @author Birgit Reiter
  * @version 1.0
