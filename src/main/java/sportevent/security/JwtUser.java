@@ -20,6 +20,7 @@ public class JwtUser implements UserDetails {
     private final String password;
     private final String email;
     private final Collection<? extends GrantedAuthority> authorities;
+    private final Date lastPasswordResetDate;
 
     public JwtUser(
             Long id,
@@ -37,6 +38,7 @@ public class JwtUser implements UserDetails {
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.lastPasswordResetDate = new Date();
     }
 
     @JsonIgnore
@@ -77,6 +79,10 @@ public class JwtUser implements UserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
     }
 
     @JsonIgnore

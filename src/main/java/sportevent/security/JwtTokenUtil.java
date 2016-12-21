@@ -162,7 +162,7 @@ public class JwtTokenUtil implements Serializable {
         //final Date expiration = getExpirationDateFromToken(token);
         return (
                 username.equals(user.getUsername())
-                        && !isTokenExpired(token)/*
+                        && !isTokenExpired(token)/* check, if token is created before last passwort change
                         && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate())*/);
     }
 }
