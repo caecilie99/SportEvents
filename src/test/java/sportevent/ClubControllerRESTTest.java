@@ -16,8 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import sportevent.dao.ClubRepository;
-import sportevent.dao.ContactRepository;
+import sportevent.dao.*;
 import sportevent.model.Club;
 import sportevent.model.Contact;
 
@@ -48,10 +47,19 @@ public class ClubControllerRESTTest {
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
     @Autowired
-    private ClubRepository clubRepository;
+    private PromoterRepository promoterRepository;
 
     @Autowired
-    private ContactRepository contactRepository;
+    private EventRepository eventRepository;
+
+    @Autowired
+    private CompetitionRepository competitionRepository;
+
+    @Autowired
+    private ParticipantRepository participantRepositiory;
+
+    @Autowired
+    private ClubRepository clubRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -75,7 +83,11 @@ public class ClubControllerRESTTest {
         //MockitoAnnotations.initMocks(this);
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
 
-        // start with empty table
+        // start with empty tables, order is important
+        this.participantRepositiory.deleteAll();
+        this.competitionRepository.deleteAll();
+        this.eventRepository.deleteAll();
+        this.promoterRepository.deleteAll();
         this.clubRepository.deleteAll();
     }
 

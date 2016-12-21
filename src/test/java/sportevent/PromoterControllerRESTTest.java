@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import sportevent.dao.PromoterRepository;
+import sportevent.dao.*;
 import sportevent.model.Promoter;
 
 import java.io.IOException;
@@ -49,6 +49,18 @@ public class PromoterControllerRESTTest {
     private PromoterRepository promoterRepository;
 
     @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private CompetitionRepository competitionRepository;
+
+    @Autowired
+    private ParticipantRepository participantRepositiory;
+
+    @Autowired
+    private ClubRepository clubRepository;
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
 
@@ -69,7 +81,13 @@ public class PromoterControllerRESTTest {
     public void setup() throws Exception {
         //MockitoAnnotations.initMocks(this);
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
+
+        // start with empty tables, order is important
+        this.participantRepositiory.deleteAll();
+        this.competitionRepository.deleteAll();
+        this.eventRepository.deleteAll();
         this.promoterRepository.deleteAll();
+        this.clubRepository.deleteAll();
     }
 
     @Test

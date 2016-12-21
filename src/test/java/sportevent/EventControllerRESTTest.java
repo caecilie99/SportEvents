@@ -17,8 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
-import sportevent.dao.EventRepository;
-import sportevent.dao.PromoterRepository;
+import sportevent.dao.*;
 import sportevent.model.Event;
 import sportevent.model.Promoter;
 
@@ -63,6 +62,15 @@ public class EventControllerRESTTest {
     private EventRepository eventRepository;
 
     @Autowired
+    private CompetitionRepository competitionRepository;
+
+    @Autowired
+    private ParticipantRepository participantRepositiory;
+
+    @Autowired
+    private ClubRepository clubRepository;
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
     @Autowired
@@ -83,9 +91,12 @@ public class EventControllerRESTTest {
         //MockitoAnnotations.initMocks(this);
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
 
-        // start with empty tables
+        // start with empty tables, order is important
+        this.participantRepositiory.deleteAll();
+        this.competitionRepository.deleteAll();
         this.eventRepository.deleteAll();
         this.promoterRepository.deleteAll();
+        this.clubRepository.deleteAll();
 
         // create clubs to use for tests
         testPromoter1Obj = promoterRepository.save(new Promoter(club1, "desricption of "+club1, "www.urlclub1.de"));
