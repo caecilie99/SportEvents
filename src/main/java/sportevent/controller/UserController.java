@@ -5,43 +5,41 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import sportevent.dao.ContactRepository;
-import sportevent.model.Club;
-import sportevent.model.Contact;
+import sportevent.dao.UserRepository;
+import sportevent.model.User;
 
 import java.net.URI;
-import java.util.List;
 
 /**
  * Created by Birgit on 11.12.2016.
  */
 @RestController
-@RequestMapping(path="/club/{id}/contact")
-public class ContactController {
+@RequestMapping(path="/club/{id}/user")
+public class UserController {
 
     @Autowired
-    private ContactRepository contactRepository;
+    private UserRepository userRepository;
 
     @RequestMapping( method = RequestMethod.POST)
-    public ResponseEntity<?> createClub(@RequestBody Contact newContact){
-        Contact savedContact = contactRepository.save(newContact);
-        if (savedContact!=null){
+    public ResponseEntity<?> createClub(@RequestBody User newUser){
+        User savedUser = userRepository.save(newUser);
+        if (savedUser !=null){
             // Append new id to request path and return as new location
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(savedContact.getId()).toUri();
+                    .buildAndExpand(savedUser.getId()).toUri();
             return ResponseEntity.created(location).build();
         } else
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public void createClub(@PathVariable("id") Long id, @RequestBody Contact updateContact){
-        updateContact = contactRepository.save(updateContact);
+    public void createClub(@PathVariable("id") Long id, @RequestBody User updateUser){
+        updateUser = userRepository.save(updateUser);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public Contact createClub(@PathVariable("id") Long id){
-        return contactRepository.findById(id);
+    public User createClub(@PathVariable("id") Long id){
+        return userRepository.findById(id);
     }
 }

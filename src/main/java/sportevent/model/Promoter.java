@@ -35,7 +35,7 @@ public class Promoter implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "contact_id")
 	@JsonIgnore
-	private Contact contact;
+	private User user;
 
 	public Promoter() {
 	}

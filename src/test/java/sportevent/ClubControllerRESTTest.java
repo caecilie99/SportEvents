@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import sportevent.dao.*;
 import sportevent.model.Club;
-import sportevent.model.Contact;
 
 import java.io.IOException;
 import java.nio.charset.Charset;

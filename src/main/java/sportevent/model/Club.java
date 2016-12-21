@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,13 +31,13 @@ public class Club implements Serializable {
     @OneToOne
     @JoinColumn(name = "contact_id")
     @JsonIgnore
-	private Contact contact;
+	private User user;
 
     public Club() {
         this.name = "";
         //this.participant = new ArrayList<Participant>();
         //this.participant.add(new Participant());
-        //this.contact = new Contact();
+        //this.user = new User();
     }
 
     public Club(String name) {
@@ -65,11 +64,11 @@ public class Club implements Serializable {
         this.participant = participant;
     }
 
-    public Contact getContact() {
-        return contact;
+    public User getUser() {
+        return user;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -17,9 +17,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import sportevent.dao.ClubRepository;
-import sportevent.dao.ContactRepository;
+import sportevent.dao.UserRepository;
 import sportevent.model.Club;
-import sportevent.model.Contact;
+import sportevent.model.User;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-public class ContactControllerRESTTest {
+public class UserControllerRESTTest {
 
     private Long clubID;
 
@@ -48,7 +48,7 @@ public class ContactControllerRESTTest {
     private ClubRepository clubRepository;
 
     @Autowired
-    private ContactRepository contactRepository;
+    private UserRepository userRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -74,7 +74,7 @@ public class ContactControllerRESTTest {
 
         // start with enpty tables
         this.clubRepository.deleteAll();
-        this.contactRepository.deleteAll();
+        this.userRepository.deleteAll();
 
         // create club and get ID to use for tests
         Club testClub = clubRepository.save(new Club("FC Fitty"));
@@ -83,10 +83,10 @@ public class ContactControllerRESTTest {
     }
 
     @Test
-    public void createNewContact() throws Exception {
-        this.mockMvc.perform(post("/club/{id}/contact", clubID)
+    public void createNewUser() throws Exception {
+        this.mockMvc.perform(post("/club/{id}/user", clubID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(this.json(new Contact("Doe", "John", "test@mail.com", "doe", "sport"))))
+                .content(this.json(new User("Doe", "John", "test@mail.com", "doe", "sport"))))
                 .andExpect(status().isCreated());
     }
 
