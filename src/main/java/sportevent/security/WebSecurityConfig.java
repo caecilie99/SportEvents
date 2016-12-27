@@ -14,6 +14,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configuration for Spring Web Security
+ * extends WebSecurityConfigurerAdapter
+ *
+ * @author Birgit Reiter
+ * @version 1.0
+ */
 @SuppressWarnings("SpringJavaAutowiringInspection")
 @Configuration
 @EnableWebSecurity
@@ -33,6 +40,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * enables password encoder for Spring security (annotation @EnableWebSecurity)
+     * https://www.mkyong.com/spring-security/spring-security-password-hashing-example/
+     *
+     * @return new BCryptPasswordEncoder()
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -43,6 +56,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationTokenFilter();
     }
 
+    /**
+     * Configuration, set access control for pathes
+     *
+     * @param httpSecurity
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -65,7 +84,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/favicon.ico",
                         "/**/*.html",
                         "/**/*.css",
-                        "/**/*.js"
+                        "/**/*.js",
+                        "/event",
+                        "/api/events"
                 ).permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated();

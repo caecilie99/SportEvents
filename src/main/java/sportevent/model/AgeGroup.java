@@ -1,5 +1,7 @@
 package sportevent.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 /**
@@ -9,6 +11,8 @@ import javax.persistence.*;
  * @version 1.0
  */
 
+// use Lombock to reduce boilerplate
+@Data
 @Entity
 public class AgeGroup {
 
@@ -38,35 +42,4 @@ public class AgeGroup {
 		this.toYear = toYear;
 	}
 
-	public String getShorcut() {
-		return shorcut;
-	}
-
-	public void setShorcut(String shorcut) {
-		this.shorcut = shorcut;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getFromYear() {
-		return fromYear;
-	}
-
-	public void setFromYear(int fromYear) {
-		this.fromYear = fromYear;
-	}
-
-	public int getToYear() {
-		return toYear;
-	}
-
-	public void setToYear(int toYear) {
-		this.toYear = toYear;
-	}
 }

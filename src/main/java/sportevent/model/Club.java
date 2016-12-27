@@ -1,6 +1,7 @@
 package sportevent.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +14,8 @@ import java.util.List;
  * @version 1.0
  */
 
+// use Lombock to reduce boilerplate
+@Data
 @Entity
 public class Club implements Serializable {
 
@@ -44,31 +47,4 @@ public class Club implements Serializable {
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Participant> getParticipant() {
-        return participant;
-    }
-
-    public void setParticipant(List<Participant> participant) {
-        this.participant = participant;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
