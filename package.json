@@ -21,6 +21,7 @@
   "homepage": "https://github.com/caecilie99/SportEvents",
   "dependencies": {
     "react": "^15.3.2",
+    "react-bootstrap": "^0.30.7",
     "react-bootstrap-table": "^2.8.0",
     "react-dom": "^15.3.2",
     "react-router": "^3.0.0",
