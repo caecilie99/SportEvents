@@ -2,16 +2,14 @@
 
 // tag::vars[]
 import React from "react"
+import DocumentTitle from "react-document-title";
 import client from "../client";
+import EventItem from "./eventitem";
 
-var ReactBsTable  = require('react-bootstrap-table');
+/*var ReactBsTable  = require('react-bootstrap-table');
 var BootstrapTable = ReactBsTable.BootstrapTable;
-var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
+var TableHeaderColumn = ReactBsTable.TableHeaderColumn;*/
 // end::vars[]
-
-function dateFormatter(cell, row) {
-    return new Date(cell).toLocaleString('de-DE', { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' });
-}
 
 // tag::app[]
 export default class Events extends React.Component {
@@ -28,13 +26,17 @@ export default class Events extends React.Component {
     }
 
     render() {
+        var events = this.state.events.map(event =>
+            <EventItem key={event._links.self.href} event={event}/>
+        );
         return (
-            <BootstrapTable data={this.state.events} striped hover>
-                <TableHeaderColumn dataField='date' width='150' dataFormat={dateFormatter }>Datum</TableHeaderColumn>
-                <TableHeaderColumn dataField='name' width='250'>Event</TableHeaderColumn>
-                <TableHeaderColumn dataField='description'>Beschreibung</TableHeaderColumn>
-                <TableHeaderColumn isKey hidden dataField='_links.self.href'>Link</TableHeaderColumn>
-            </BootstrapTable>
+            <DocumentTitle title="Show Events">
+                <div>
+                    <div className="row">
+                        {events}
+                    </div>
+                </div>
+            </DocumentTitle>
         );
     }
 }

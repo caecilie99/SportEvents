@@ -7,6 +7,7 @@ import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 're
 import Events from "./components/events";
 import Body from "./components/body";
 import About from "./components/about";
+import Login from "./components/login";
 
 // tag::render[]
 ReactDOM.render(
@@ -14,6 +15,7 @@ ReactDOM.render(
 		<Route path="/" component={Body}>
 			<Route path="/events" component={Events}/>
 			<Route path="/about" component={About}/>
+			<Route path="/login" component={Login}/>
 		</Route>
 	</Router>,
 	document.getElementById('app')

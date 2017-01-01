@@ -9,7 +9,9 @@ export default class Body extends React.Component {
         return (
             <div>
                 <Menu/>
-                {this.props.children}
+                <main className="container">
+                    {this.props.children}
+                </main>
                 <Footer/>
             </div>
 
