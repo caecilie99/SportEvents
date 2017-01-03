@@ -1,17 +1,10 @@
 'use strict';
 
-// tag::vars[]
 import React from "react"
 import DocumentTitle from "react-document-title";
-import client from "../client";
-import EventItem from "./eventitem";
+import client from "../../client";
+import EventItem from "../item/eventitem";
 
-/*var ReactBsTable  = require('react-bootstrap-table');
-var BootstrapTable = ReactBsTable.BootstrapTable;
-var TableHeaderColumn = ReactBsTable.TableHeaderColumn;*/
-// end::vars[]
-
-// tag::app[]
 export default class Events extends React.Component {
 
     constructor(props) {
@@ -20,14 +13,16 @@ export default class Events extends React.Component {
     }
 
     componentDidMount() {
-        client({method: 'GET', path: '/api/events'}).done(response => {
-            this.setState({events: response.entity._embedded.events});
+        console.log("GET events");
+        client({method: 'GET', path: '/event/all'}).done(response => {
+            console.log("Response: ", response.entity);
+            this.setState({events: response.entity});
         });
     }
 
     render() {
         var events = this.state.events.map(event =>
-            <EventItem key={event._links.self.href} event={event}/>
+            <EventItem key={event.id} event={event}/>
         );
         return (
             <DocumentTitle title="Show Events">
@@ -40,6 +35,5 @@ export default class Events extends React.Component {
         );
     }
 }
-// end::app[]
 
 

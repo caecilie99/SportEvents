@@ -30,7 +30,7 @@ public class EventController {
     @Autowired
     private PromoterRepository promoterRepository;
 
-    @RequestMapping(path = "", method = RequestMethod.GET)
+    @RequestMapping(path = "/all", method = RequestMethod.GET)
     public List<Event> getEvents(@RequestParam(value = "promoterid", required = false) Long promoterid){
         if (promoterid!=null)
             return eventRepository.findByPromoterId(promoterid);
