@@ -14,7 +14,7 @@ export default class Events extends React.Component {
 
     componentDidMount() {
         console.log("GET events");
-        client({method: 'GET', path: '/event/all'}).done(response => {
+        client({method: 'GET', path: 'event/list'}).done(response => {
             console.log("Response: ", response.entity);
             this.setState({events: response.entity});
         });

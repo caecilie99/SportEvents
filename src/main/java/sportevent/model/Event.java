@@ -34,7 +34,7 @@ public class Event  implements Serializable {
 	private List<Competition> competition;
 
 	@ManyToOne
-	@JoinColumn(name = "promoter_id")
+	@JoinColumn(name = "promoterid")
 	private Promoter promoter;
 
 	public Event() {

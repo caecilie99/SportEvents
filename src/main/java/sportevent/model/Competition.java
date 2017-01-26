@@ -1,7 +1,10 @@
 package sportevent.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -38,18 +41,17 @@ public class Competition  implements Serializable {
 
     private Double fee;
 
-/*    @ManyToMany(mappedBy = "competition", fetch = FetchType.LAZY)
-    private List<Participant> participants = new ArrayList<Participant>();*/
+    @ManyToMany(mappedBy = "competition", fetch = FetchType.LAZY)
+    private Set<Participant> participants = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
 
-
     @OneToMany
     @JoinColumn(name = "agegroup_id")
-    @JsonIgnore
-    private Set<AgeGroup> ageGroup = new HashSet<AgeGroup>(); // user set to create primary key
+    //@JsonIgnore
+    private Set<AgeGroup> ageGroup = new HashSet<AgeGroup>();
 
     public Competition() {
     }
@@ -60,4 +62,5 @@ public class Competition  implements Serializable {
         this.fee = fee;
         this.event = event;
     }
+
 }

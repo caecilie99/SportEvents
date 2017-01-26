@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import static org.hamcrest.core.StringContains.containsString;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,7 +36,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @WebAppConfiguration
-public class EventControllerRESTTest {
+public class EventControllerTest {
 
     private Promoter testPromoter1Obj;
     private Promoter testPromoter2Obj;
@@ -100,10 +99,7 @@ public class EventControllerRESTTest {
 
         // create clubs to use for tests
         testPromoter1Obj = promoterRepository.save(new Promoter(club1, "desricption of "+club1, "www.urlclub1.de"));
-        assertNotNull(testPromoter1Obj);
-
         testPromoter2Obj = promoterRepository.save(new Promoter(club2, "desricption of "+club2, "www.urlclub2.de"));
-        assertNotNull(testPromoter2Obj);
     }
 
     @Test
@@ -178,7 +174,7 @@ public class EventControllerRESTTest {
         Event event2Obj = new Event(new Date(), event2, "some hot stuff", testPromoter1Obj);
         assertNotNull(eventRepository.save(event2Obj));
 
-        mockMvc.perform(get("/event"))
+        mockMvc.perform(get("/event/list"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$", hasSize(2)));
@@ -201,10 +197,32 @@ public class EventControllerRESTTest {
         Event event4Obj = new Event(new Date(), event2, "some hot stuff", testPromoter2Obj);
         assertNotNull(eventRepository.save(event4Obj));
 
-        mockMvc.perform(get("/event").param("promoterid", testPromoter1Obj.getId().toString()))
+        String test = testPromoter1Obj.getId().toString();
+        mockMvc.perform(get("/event/list").param("promoterid", test))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    public void findByPromoterid(){
+        Event event1Obj = new Event(new Date(), event1, "some stuff", testPromoter1Obj);
+        assertNotNull(eventRepository.save(event1Obj));
+
+        Event event2Obj = new Event(new Date(), event2, "some hot stuff", testPromoter1Obj);
+        assertNotNull(eventRepository.save(event2Obj));
+
+        // create and save two events for promoter2
+        Event event3Obj = new Event(new Date(), event1, "some stuff", testPromoter2Obj);
+        assertNotNull(eventRepository.save(event3Obj));
+
+        Event event4Obj = new Event(new Date(), event2, "some hot stuff", testPromoter2Obj);
+        assertNotNull(eventRepository.save(event4Obj));
+
+        List<Event> eventsPromoter1 = eventRepository.findByPromoterId(testPromoter1Obj.getId());
+        assertNotNull(eventsPromoter1);
+        List<Event> eventsPromoter2 = eventRepository.findByPromoterId(testPromoter2Obj.getId());
+        assertNotNull(eventsPromoter2);
     }
 
     protected String json(Object o) throws IOException {

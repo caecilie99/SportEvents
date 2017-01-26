@@ -4,7 +4,6 @@ import React from "react"
 import { Link } from 'react-router';
 import Formatter from "../../api/formatter";
 
-// tag::app[]
 export default class EventItem extends React.Component {
 
     render() {
@@ -26,6 +25,5 @@ export default class EventItem extends React.Component {
         )
     }
 }
-// end::app[]
 
 

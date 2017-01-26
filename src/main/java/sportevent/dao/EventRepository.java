@@ -16,8 +16,7 @@ import java.util.List;
  * @author Birgit Reiter
  * @version 1.0
  */
-//@Repository
-@RepositoryRestResource(collectionResourceRel = "events", path = "events")
+@Repository
 public interface EventRepository extends CrudRepository<Event, Long> {
 
     public List<Event> findAll();

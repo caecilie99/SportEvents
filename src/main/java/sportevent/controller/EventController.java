@@ -30,7 +30,14 @@ public class EventController {
     @Autowired
     private PromoterRepository promoterRepository;
 
-    @RequestMapping(path = "/all", method = RequestMethod.GET)
+    /**
+     * read all events from db and return as JSON
+     * if promoter id not null, read and return events for promoter
+     *
+     * @param promoterid
+     * @return
+     */
+    @RequestMapping(path = "/list", method = RequestMethod.GET)
     public List<Event> getEvents(@RequestParam(value = "promoterid", required = false) Long promoterid){
         if (promoterid!=null)
             return eventRepository.findByPromoterId(promoterid);
@@ -40,7 +47,19 @@ public class EventController {
     }
 
     /**
-     * create new event and return new location for event, identified by id
+     * Find event by id and return event as JSON
+     *
+     * @param id
+     * @return event
+     *
+     */
+    @RequestMapping(path = "{id}", method = RequestMethod.GET)
+    public Event getEvent(@PathVariable("id") Long id){
+        return eventRepository.findById(id);
+    }
+
+    /**
+     * create and save new event and return new location for event, identified by id
      *
      * @param name
      * @param description
@@ -63,18 +82,7 @@ public class EventController {
     }
 
     /**
-     *
-     * @param id
-     * @return event
-     *
-     */
-    @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public Event getEvent(@PathVariable("id") Long id){
-        return eventRepository.findById(id);
-    }
-
-    /**
-     * save event
+     * update event
      *
      * @param id
      * @param promoterEvent

@@ -3,9 +3,9 @@
 import React from "react"
 import client from "../../client";
 import Formatter from "../../api/formatter";
-import CompetitionItem from "../item/competitionitem";
+import ParticipantItem from "../item/participantitem";
 
-export default class EventDetail extends React.Component {
+export default class CompetitionDetail extends React.Component {
 
     constructor(props) {
         super(props);
@@ -13,22 +13,22 @@ export default class EventDetail extends React.Component {
     }
 
     componentWillMount () {
-        console.log('GET /event/'+this.props.params.id);
-        fetch('/event/'+this.props.params.id)
+        console.log('GET /events/'+this.props.params.id);
+        fetch('/api/events/'+this.props.params.id)
             .then( (response) => {
                 return response.json() })
             .then( (json) => {
                 console.log("Success");
                 this.setState({event: json});
             });
-        console.log('GET /event/'+this.props.params.id+'/competition');
-        fetch('/event/'+this.props.params.id+'/competition')
+        console.log('GET /api/events/'+this.props.params.id+'/competition');
+        fetch('/api/events/'+this.props.params.id+'/competition')
             .then( (response) => {
                 return response.json() })
             .then( (json) => {
                 console.log("Success competitions");
-                console.log(json);
-                this.setState({competitions: json});
+                console.log(json._embedded.competitions);
+                this.setState({competitions: json._embedded.competitions});
 
             });
     }
@@ -36,7 +36,7 @@ export default class EventDetail extends React.Component {
     render() {
         console.log('Render /events/'+this.props.params.id);
         var competitions = this.state.competitions.map(competition =>
-            <CompetitionItem key={competition.id} competition={competition}/>
+            <CompetitionItem key={competition._links.self.href} competition={competition}/>
         );
         return (
             <div key={this.props.params.id}>
@@ -61,11 +61,17 @@ export default class EventDetail extends React.Component {
                             <div className="panel-heading">
                                 <h4 className="panel-title">Competitions</h4>
                             </div>
-                            <div className="panel-body text-left nopadding">
-                                <div className="list-group">
-                                        {competitions}
-                                </div>
-                            </div>
+                            <table className="table">
+                                <thead>
+                                <tr>
+                                    <th>description</th>
+                                    <th>fee</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {competitions}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 

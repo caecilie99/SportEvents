@@ -7,10 +7,7 @@ export default class CompetitionItem extends React.Component {
 
     render() {
         return (
-            <tr>
-                <td>{this.props.competition.description}</td>
-                <td>{this.props.competition.fee}</td>
-            </tr>
+            <a href="#" className="list-group-item">{this.props.competition.name}</a>
         )
     }
 }
