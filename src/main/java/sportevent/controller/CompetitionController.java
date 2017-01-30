@@ -9,6 +9,7 @@ import sportevent.dao.CompetitionRepository;
 import sportevent.dao.EventRepository;
 import sportevent.model.Competition;
 import sportevent.model.Event;
+import sportevent.model.Participant;
 import sportevent.model.Promoter;
 
 import java.net.URI;
@@ -38,7 +39,8 @@ public class CompetitionController {
      */
     @RequestMapping(path = "", method = RequestMethod.GET)
     public List<Competition> getCompetitions(@PathVariable("eventid") Long eventId){
-        return competitionRepository.findByEventId(eventId);
+        List<Competition> comp =competitionRepository.findByEventId(eventId);
+        return comp;
     }
 
     /**
@@ -61,5 +63,10 @@ public class CompetitionController {
             return ResponseEntity.created(location).build();
         } else
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @RequestMapping(path = "participants", method = RequestMethod.POST)
+    public List<Participant> getParticipantsForEvent(@PathVariable("eventid") Long eventId) {
+        return competitionRepository.findParticipantsByEventId(eventId);
     }
 }

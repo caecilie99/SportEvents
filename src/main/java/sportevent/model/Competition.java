@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -24,7 +25,9 @@ import java.util.Set;
  */
 
 // use Lombock to reduce boilerplate
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 public class Competition  implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -42,10 +45,12 @@ public class Competition  implements Serializable {
     private Double fee;
 
     @ManyToMany(mappedBy = "competition", fetch = FetchType.LAZY)
+    //@JsonIgnore
     private Set<Participant> participants = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "event_id")
+    @JsonIgnore
     private Event event;
 
     @OneToMany

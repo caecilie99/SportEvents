@@ -62,7 +62,7 @@ export default class EventDetail extends React.Component {
                                 <h4 className="panel-title">Competitions</h4>
                             </div>
                             <div className="panel-body text-left nopadding">
-                                <div className="list-group">
+                                <div className="row">
                                         {competitions}
                                 </div>
                             </div>

@@ -8,8 +8,10 @@ export default class ParticipantItem extends React.Component {
     render() {
         return (
             <tr>
-                <td>{this.props.competition.description}</td>
-                <td>{this.props.competition.fee}</td>
+                <td>{this.props.participant.lastname}</td>
+                <td>{this.props.participant.firstname}</td>
+                <td>{this.props.participant.year}</td>
+                <td>{this.props.participant.club.name}</td>
             </tr>
         )
     }

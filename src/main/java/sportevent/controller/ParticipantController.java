@@ -51,10 +51,10 @@ public class ParticipantController {
     @RequestMapping(path = "/event/{eventid}/participants/{clubid}/add", method = RequestMethod.POST)
     public ResponseEntity<?> addParticipant(@PathVariable("eventid") Long eventId, @PathVariable("clubid") Long clubId,
                                             @RequestParam("lastname") String lastName, @RequestParam("firstname") String firstName,
-                                            @RequestParam("year") Long year, @RequestParam("competition") Set<Competition> competitions){
+                                            @RequestParam("year") Long year, @RequestParam("competition") Set<Competition> competitions) {
         Club club = clubRepository.findById(clubId);
         Participant savedParticipant = participantRepository.save(new Participant(lastName, firstName, year, club, competitions));
-        if (savedParticipant!=null){
+        if (savedParticipant != null) {
             // Build new path for event and return as new location
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest().replacePath("/event/{eventid}/participants/{clubid}/{id}")

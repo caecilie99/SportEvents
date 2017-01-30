@@ -15,7 +15,9 @@ import java.util.List;
  */
 
 // use Lombock to reduce boilerplate
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 public class Event  implements Serializable {
 
@@ -35,6 +37,7 @@ public class Event  implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "promoterid")
+	//@JsonIgnore
 	private Promoter promoter;
 
 	public Event() {

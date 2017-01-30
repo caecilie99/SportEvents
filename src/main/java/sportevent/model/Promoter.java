@@ -2,6 +2,8 @@ package sportevent.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,7 +17,9 @@ import java.util.List;
  */
 
 // use Lombock to reduce boilerplate
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 public class Promoter implements Serializable {
 
@@ -37,7 +41,7 @@ public class Promoter implements Serializable {
 
 	@OneToOne
 	@JoinColumn(name = "contact_id")
-	@JsonIgnore
+	//@JsonIgnore
 	private User user;
 
 	public Promoter() {

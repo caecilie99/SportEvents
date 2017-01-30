@@ -18,6 +18,5 @@ public interface ParticipantRepository extends CrudRepository<Participant, Long>
     public List<Participant> findAll();
     public Participant findById(Long id);
     //public Participant findByName(String name);
-    //public List<Participant> findByEventId(Long event_id);
 
 }

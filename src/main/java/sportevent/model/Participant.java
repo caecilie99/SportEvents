@@ -1,6 +1,9 @@
 package sportevent.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -18,7 +21,9 @@ import java.util.Set;
  */
 
 // use Lombock to reduce boilerplate
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 public class Participant  implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -34,18 +39,21 @@ public class Participant  implements Serializable {
 
 	private Long year;
 
-    @ManyToOne
-    @JoinColumn(name="club_id", insertable = false, updatable = false)
+    @ManyToOne(/*cascade = CascadeType.ALL, fetch = FetchType.LAZY*/)
+    @JoinColumn(name="club_id", updatable = false)
+    //@JsonIgnore
 	private Club club;
 
 	@NotEmpty
 	@ManyToMany(/*cascade = CascadeType.ALL, fetch = FetchType.LAZY*/)
 	@JoinTable(	joinColumns = {@JoinColumn(name = "participant_id", referencedColumnName = "participant_id")},
 			inverseJoinColumns = {@JoinColumn(name = "competition_id", referencedColumnName = "competition_id")})
+    @JsonIgnore
 	private Set<Competition> competition = new HashSet<Competition>();
 
     @OneToOne
     @JoinColumn(name="agegroup_id")
+    //@JsonIgnore
 	private AgeGroup ageGroup;
 
 	public Participant() {
