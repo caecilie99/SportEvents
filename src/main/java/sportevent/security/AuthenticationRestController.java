@@ -22,17 +22,22 @@ import javax.servlet.http.HttpServletRequest;
 public class AuthenticationRestController {
 
     @Value("${jwt.header}")
+    // header for token, defined in application properties
     private String tokenHeader;
 
     @Autowired
+    // part of spring securitiy, attempts to authenticate the passed Authentication object, see org.springframework.security.authentication
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    // functions to handle token
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
+    // part of spring security, core interface which loads user-specific data, see org.springframework.security.core.userdetails
     private UserDetailsService userDetailsService;
 
+    // path for user authentication, defined in application properties
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
 

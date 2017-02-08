@@ -19,7 +19,7 @@ import java.net.URI;
 
 // TODO add user for promoter
 @RestController
-@RequestMapping(path="/club/{id}/user")
+@RequestMapping(path="/user")
 public class UserController {
 
     @Autowired
@@ -28,17 +28,23 @@ public class UserController {
     /**
      * create and save new user
      *
-     * @param newUser
-     * @return
+     * @param username
+     * @param firstname
+     * @param lastname
+     * @param email
+     * @param password
+     * @return url with new id
      */
-    @RequestMapping( method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@RequestBody User newUser){
-        User savedUser = userRepository.save(newUser);
-        if (savedUser !=null){
+    @RequestMapping(path="{username}", method = RequestMethod.POST)
+    public ResponseEntity<?> createUser(@PathVariable("username") String username, @RequestParam String firstname,
+                                        @RequestParam String lastname, @RequestParam String email, @RequestParam String password){
+        User newUser = new User(lastname, firstname, email, username, password);
+        userRepository.save(newUser);
+        if (newUser !=null){
             // Append new id to request path and return as new location
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(savedUser.getId()).toUri();
+                    .buildAndExpand(newUser.getId()).toUri();
             return ResponseEntity.created(location).build();
         } else
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -48,11 +54,32 @@ public class UserController {
      * update user information
      *
      * @param id
-     * @param updateUser
+     * @param firstname
+     * @param lastname
+     * @param email
      */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public void updateUser(@PathVariable("id") Long id, @RequestBody User updateUser){
-        updateUser = userRepository.save(updateUser);
+    public ResponseEntity<?>  updateUser(@PathVariable("id") Long id, @RequestParam(value = "firstname", required = false) String firstname,
+                           @RequestParam(value = "lastname", required = false) String lastname,
+                                         @RequestParam(value = "email", required = false) String email,
+                                         @RequestParam(value = "zipcode", required = false) String zipcode,
+                                         @RequestParam(value = "city", required = false) String city,
+                                         @RequestParam(value = "adress", required = false) String adress,
+                                         @RequestParam(value = "phone", required = false) String phone){
+        User updateUser = userRepository.findById(id);
+        if (updateUser !=null){
+            if (firstname!=null) updateUser.setFirstname(firstname);
+            if (lastname!=null) updateUser.setLastname(lastname);
+            if (email!=null) updateUser.setEmail(email);
+            if (adress!=null) updateUser.setAdress(adress);
+            if (zipcode!=null) updateUser.setZipcode(zipcode);
+            if (city!=null) updateUser.setCity(city);
+            if (phone!=null) updateUser.setPhone(phone);
+            userRepository.save(updateUser);
+            return ResponseEntity.accepted().build();
+        } else {
+            return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

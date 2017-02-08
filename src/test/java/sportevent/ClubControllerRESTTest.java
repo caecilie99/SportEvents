@@ -1,5 +1,4 @@
 package sportevent;
-
 /**
  * Created by Birgit on 10.12.2016.
  */
@@ -13,6 +12,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
@@ -29,9 +29,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
-@WebAppConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ClubControllerRESTTest {
 
     private static final String club1 = "VfL Hintertupfingen";
@@ -82,7 +81,7 @@ public class ClubControllerRESTTest {
         //MockitoAnnotations.initMocks(this);
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
 
-        // start with empty tables, order is important
+        // clean all tables, order is important
         this.participantRepositiory.deleteAll();
         this.competitionRepository.deleteAll();
         this.eventRepository.deleteAll();
@@ -91,9 +90,10 @@ public class ClubControllerRESTTest {
     }
 
     @Test
-    public void createNewClub() throws Exception {
+    public void shouldCreateNewClub() throws Exception {
         this.mockMvc.perform(post("/club/" + club1))
                 .andExpect(status().isCreated());
+        assertNotNull(clubRepository.findByName(club1));
     }
 
     @Test

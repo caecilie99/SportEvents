@@ -80,6 +80,6 @@ public class User implements Serializable{
 
         public void setPassword(String password) {
             // use bcrypt to set password
-            this.password = PASSWORD_ENCODER.encode(password);
+            this.password = password;//PASSWORD_ENCODER.encode(password);
         }
 }

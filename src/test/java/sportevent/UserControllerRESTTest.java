@@ -7,18 +7,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import sportevent.dao.ClubRepository;
+import sportevent.controller.UserController;
 import sportevent.dao.UserRepository;
-import sportevent.model.Club;
 import sportevent.model.User;
 
 import java.io.IOException;
@@ -29,29 +28,28 @@ import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
+import static org.hamcrest.CoreMatchers.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest
-@WebAppConfiguration
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@WebMvcTest(UserController.class)
 public class UserControllerRESTTest {
-
-    private Long clubID;
 
     private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
 
+
     private MockMvc mockMvc;
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
-
-    @Autowired
-    private ClubRepository clubRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
 
 
     @Autowired
@@ -73,29 +71,78 @@ public class UserControllerRESTTest {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
 
         // start with enpty tables
-        this.clubRepository.deleteAll();
         this.userRepository.deleteAll();
-
-        // create club and get ID to use for tests
-        Club testClub = clubRepository.save(new Club("FC Fitty"));
-        assertNotNull(testClub);
-        clubID = testClub.getId();
     }
 
     @Test
-    public void createNewUser() throws Exception {
-        this.mockMvc.perform(post("/club/{id}/user", clubID)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(this.json(new User("Doe", "John", "test@mail.com", "doe", "sport"))))
+    public void shouldCreateNewUser() throws Exception {
+        //User newUser = new User("Doe", "John", "test@mail.com", "doe", "sport");
+        this.mockMvc.perform(post("/user/{username}", "doe").param("lastname", "Doe").param("firstname", "John")
+                .param("email", "test@mail.com").param("password", "sport")
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
+        assertNotNull(userRepository.findByUsername("doe"));
     }
 
-    protected String json(Object o) throws IOException {
-        MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
-        this.mappingJackson2HttpMessageConverter.write(
-                o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
-        return mockHttpOutputMessage.getBodyAsString();
+    @Test
+    public void shouldCreateAndUpdateUser() throws Exception {
+        User newUser = new User("Doe", "John", "test@mail.com", "doe", "sport");
+        assertNotNull(userRepository.save(newUser));
+
+        this.mockMvc.perform(put("/user/{id}", newUser.getId()).param("firstname", "Mike")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+        User updatedUser = userRepository.findByUsername("doe");
+        assertThat(updatedUser.getFirstname(), is("Mike"));
+
+        this.mockMvc.perform(put("/user/{id}", newUser.getId()).param("lastname", "Smith")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+        updatedUser = userRepository.findByUsername("doe");
+        assertThat(updatedUser.getLastname(), is("Smith"));
+
+        this.mockMvc.perform(put("/user/{id}", newUser.getId()).param("email", "new@mail.com")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+        updatedUser = userRepository.findByUsername("doe");
+        assertThat(updatedUser.getEmail(), is("new@mail.com"));
+
+        this.mockMvc.perform(put("/user/{id}", newUser.getId()).param("zipcode", "12345")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+        updatedUser = userRepository.findByUsername("doe");
+        assertThat(updatedUser.getZipcode(), is("12345"));
+
+        this.mockMvc.perform(put("/user/{id}", newUser.getId()).param("city", "Berlin")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+        updatedUser = userRepository.findByUsername("doe");
+        assertThat(updatedUser.getCity(), is("Berlin"));
+
+        this.mockMvc.perform(put("/user/{id}", newUser.getId()).param("adress", "Lange Strasse 4711")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+        updatedUser = userRepository.findByUsername("doe");
+        assertThat(updatedUser.getAdress(), is("Lange Strasse 4711"));
+
+        this.mockMvc.perform(put("/user/{id}", newUser.getId()).param("phone", "030/99999")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+        updatedUser = userRepository.findByUsername("doe");
+        assertThat(updatedUser.getPhone(), is("030/99999"));
     }
 
+    @Test
+    public void shouldFindUserById() throws Exception {
+        User newUser = new User("Doe", "John", "test@mail.com", "doe", "sport");
+        assertNotNull(userRepository.save(newUser));
+
+        this.mockMvc.perform(get("/user/{id}", newUser.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.username", is("doe")))
+                .andExpect(jsonPath("$.firstname", is("John")))
+                .andExpect(jsonPath("$.lastname", is("Doe")))
+                .andExpect(jsonPath("$.email", is("test@mail.com")));
+    }
 
 }
