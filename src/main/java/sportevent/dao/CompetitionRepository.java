@@ -10,7 +10,7 @@ import sportevent.model.Participant;
 import java.util.List;
 
 /**
- * Repository for competitions
+ * interface for competition repository
  *
  * @author Birgit Reiter
  * @version 1.0
@@ -18,10 +18,15 @@ import java.util.List;
 @Repository
 public interface CompetitionRepository extends CrudRepository<Competition, Long> {
 
-    public List<Competition> findAll();
-    public Competition findById(Long id);
-    public Competition findByName(String name);
+    /**
+     * find competitions for event by event id
+     *
+     * @param event_id
+     * @return list of competitions
+     */
     public List<Competition> findByEventId(Long event_id);
+
+    // TODO needed?
     public List<Participant> findParticipantsByEventId(Long event_id);
 
 }

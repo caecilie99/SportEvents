@@ -11,8 +11,13 @@ import sportevent.model.User;
 import java.net.URI;
 
 /**
- * Created by Birgit on 11.12.2016.
+ * REST controller to user information
+ *
+ * @author Birgit Reiter
+ * @version 1.0
  */
+
+// TODO add user for promoter
 @RestController
 @RequestMapping(path="/club/{id}/user")
 public class UserController {
@@ -20,8 +25,14 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * create and save new user
+     *
+     * @param newUser
+     * @return
+     */
     @RequestMapping( method = RequestMethod.POST)
-    public ResponseEntity<?> createClub(@RequestBody User newUser){
+    public ResponseEntity<?> createUser(@RequestBody User newUser){
         User savedUser = userRepository.save(newUser);
         if (savedUser !=null){
             // Append new id to request path and return as new location
@@ -33,13 +44,25 @@ public class UserController {
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * update user information
+     *
+     * @param id
+     * @param updateUser
+     */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public void createClub(@PathVariable("id") Long id, @RequestBody User updateUser){
+    public void updateUser(@PathVariable("id") Long id, @RequestBody User updateUser){
         updateUser = userRepository.save(updateUser);
     }
 
+    /**
+     * find user by id
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public User createClub(@PathVariable("id") Long id){
+    public User findUser(@PathVariable("id") Long id){
         return userRepository.findById(id);
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
  * @version 1.0
  */
 
-// use Lombock to reduce boilerplate
+// use Lombock to create getter and setter to reduce boilerplate
 //@Data
 @Getter
 @Setter
@@ -25,23 +25,29 @@ public class Promoter implements Serializable {
 
 	@Id
 	@GeneratedValue
+	// unique identifier
 	private Long id;
 
 	@Column(nullable = false)
+	// official name
 	private String name;
 
+	// full description
 	private String description;
 
 	@Column(nullable = false)
+	// url for more information
 	private String url;
 
 	@OneToMany(mappedBy = "promoter")
 	@JsonIgnore
+	// assigned events
 	private List<Event> event;
 
 	@OneToOne
 	@JoinColumn(name = "contact_id")
 	//@JsonIgnore
+	// user information for sign in
 	private User user;
 
 	public Promoter() {

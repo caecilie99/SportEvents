@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * REST controller for promoter
+ * REST controller to manage events
  *
  * @author Birgit Reiter
  * @version 1.0
@@ -47,7 +47,7 @@ public class EventController {
     }
 
     /**
-     * Find event by id and return event as JSON
+     * Find event by id and return event information
      *
      * @param id
      * @return event
@@ -65,7 +65,7 @@ public class EventController {
      * @param description
      * @param date
      * @param promoterId
-     * @return response result
+     * @return url with new id
      */
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
     public ResponseEntity<?> createEvent(@PathVariable("name") String name, @RequestParam("promoterid") Long promoterId, @RequestParam("description") String description, @RequestParam("date") String date){
@@ -82,7 +82,7 @@ public class EventController {
     }
 
     /**
-     * update event
+     * update event information
      *
      * @param id
      * @param promoterEvent

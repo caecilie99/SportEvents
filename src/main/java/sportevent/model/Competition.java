@@ -35,27 +35,34 @@ public class Competition  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "competition_id")
+    // unique identifier
     private Long id;
 
     @Column(nullable = false)
+    // short name
     private String name;
 
+    // full description
     private String description;
 
+    // fee to pay
     private Double fee;
 
     @ManyToMany(mappedBy = "competition", fetch = FetchType.LAZY)
     //@JsonIgnore
+    // participants assigned to competition
     private Set<Participant> participants = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "event_id")
     @JsonIgnore
+    // assigned event
     private Event event;
 
     @OneToMany
     @JoinColumn(name = "agegroup_id")
     //@JsonIgnore
+    // agegroups, used for restrictions for the age of participants
     private Set<AgeGroup> ageGroup = new HashSet<AgeGroup>();
 
     public Competition() {

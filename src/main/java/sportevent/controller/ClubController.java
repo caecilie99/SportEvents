@@ -12,7 +12,11 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * Created by Birgit on 21.11.2016.
+ * REST Controller to manage clubs
+ *
+ * @author Birgit Reiter
+ * @version 1.0
+ *
  */
 @RestController
 @RequestMapping(path="/club")
@@ -21,12 +25,23 @@ public class ClubController {
     @Autowired
     private ClubRepository clubRepository;
 
+    /**
+     * read all clubs from db
+     *
+     * @return list of clubs
+     */
     @RequestMapping(path = "/all", method = RequestMethod.GET)
     public List<Club> readAllClubs(){
         return clubRepository.findAll();
 
     }
 
+    /**
+     * create an save new club
+     *
+     * @param name
+     * @return url with new id
+     */
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
     public ResponseEntity<?> createClub(@PathVariable("name") String name){
         Club savedClub = clubRepository.save(new Club(name));
@@ -40,6 +55,12 @@ public class ClubController {
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * update club informations
+     *
+     * @param id
+     * @param updateClub
+     */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
     public void updateClub(@PathVariable("id") Long id, @RequestBody Club updateClub){
         updateClub = clubRepository.save(updateClub);

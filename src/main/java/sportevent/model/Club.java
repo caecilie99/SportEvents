@@ -16,7 +16,7 @@ import java.util.List;
  * @version 1.0
  */
 
-// use Lombock to reduce boilerplate
+// use Lombock to create getter and setter to reduce boilerplate
 //@Data
 @Getter
 @Setter
@@ -25,27 +25,25 @@ public class Club implements Serializable {
 
     @Id
     @GeneratedValue
-	private Long id;
+    // unique identifier
+    private Long id;
 
-
+    // full name
     @Column(nullable = false)
-	private String name;
+    private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "club", fetch=FetchType.EAGER)
-	private List<Participant> participant;
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    // list of participants assigned to competitions for events
+    private List<Participant> participant;
 
     @OneToOne
     @JoinColumn(name = "contact_id")
     //@JsonIgnore
-	private User user;
+    // user information for sign in
+    private User user;
 
-    public Club() {
-        this.name = "";
-        //this.participant = new ArrayList<Participant>();
-        //this.participant.add(new Participant());
-        //this.user = new User();
-    }
+    public Club() { this.name = ""; }
 
     public Club(String name) {
         this.name = name;

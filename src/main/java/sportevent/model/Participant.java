@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Participants can attend to a competition
+ * Participants for competitions
  *
  * @author Birgit Reiter
  * @version 1.0
@@ -31,17 +31,22 @@ public class Participant  implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="participant_id")
+	// unique intentifier
 	private Long id;
 
+	// lastname
 	private String lastname;
 
+	// firstname
 	private String firstname;
 
+	// year of birth
 	private Long year;
 
     @ManyToOne(/*cascade = CascadeType.ALL, fetch = FetchType.LAZY*/)
     @JoinColumn(name="club_id", updatable = false)
     //@JsonIgnore
+	// assigned club
 	private Club club;
 
 	@NotEmpty
@@ -49,11 +54,13 @@ public class Participant  implements Serializable {
 	@JoinTable(	joinColumns = {@JoinColumn(name = "participant_id", referencedColumnName = "participant_id")},
 			inverseJoinColumns = {@JoinColumn(name = "competition_id", referencedColumnName = "competition_id")})
     @JsonIgnore
+	// assigned competitions
 	private Set<Competition> competition = new HashSet<Competition>();
 
     @OneToOne
     @JoinColumn(name="agegroup_id")
     //@JsonIgnore
+	// assigned agegroup
 	private AgeGroup ageGroup;
 
 	public Participant() {

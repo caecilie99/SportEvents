@@ -23,21 +23,27 @@ public class Event  implements Serializable {
 
 	@Id
 	@GeneratedValue
+	// unique identifier
 	private Long id;
 
+	// date of event will take place
 	private Date date;
 
+	// official name
 	private String name;
 
+	// full description
 	private String description;
 
 	@OneToMany(mappedBy = "event")
 	@JsonIgnore
+	// list of all possible competitions
 	private List<Competition> competition;
 
 	@ManyToOne
 	@JoinColumn(name = "promoterid")
 	//@JsonIgnore
+	// promoter, who is responsible for event
 	private Promoter promoter;
 
 	public Event() {

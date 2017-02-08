@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * REST controller for participants
+ * REST controller to manage participants
  *
  * @author Birgit Reiter
  * @version 1.0
@@ -39,7 +39,7 @@ public class ParticipantController {
     private ParticipantRepository participantRepository;
 
     /**
-     * create new competition and return new location for competition, identified by id
+     * add participant to competetion for event
      *
      * @param clubId
      * @param eventId

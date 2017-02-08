@@ -21,42 +21,50 @@ import java.util.Collection;
  * @version 1.0
  */
 
-// use Lombock to reduce boilerplate
+// use Lombock to create getter and setter to reduce boilerplate
 //@Data
 @Getter
 @Setter
-// ensures that the Lombok-generated toString() method will NOT print out the password.
-//@ToString(exclude = "password")
 @Entity
 public class User implements Serializable{
         public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
         @Id
         @GeneratedValue
+        // unique identifier
         private Long id;
 
         @Column(nullable = false)
+        // lastname of responsible person
         private String lastname;
 
         @Column(nullable = false)
+        // firstname of responsible person
         private String firstname;
 
+        // adress of responsible person
         private String adress;
 
+        // zipcode
         private String zipcode;
 
+        // city
         private String city;
 
         @Column(nullable = false)
+        // email for contact
         private String email;
 
+        // pone number for contact
         private String phone;
 
         @Column(nullable = false)
+        // username to sign in
         private String username;
 
         @Column(nullable = false)
         @JsonIgnore
+        // password
         private String password;
 
         public User() {

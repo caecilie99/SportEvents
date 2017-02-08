@@ -12,7 +12,7 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * REST controller for promoter
+ * REST controller to manage promoter
  *
  * @author Birgit Reiter
  * @version 1.0
@@ -24,12 +24,25 @@ public class PromoterController {
     @Autowired
     private PromoterRepository promoterRepository;
 
+    /**
+     * find all promoter
+     *
+     * @return list of promoter
+     */
     @RequestMapping(path = "/all", method = RequestMethod.GET)
     public List<Promoter> readAllClubs(){
         return promoterRepository.findAll();
 
     }
 
+    /**
+     * create and save new promoter
+     *
+     * @param name
+     * @param description
+     * @param url
+     * @return url with new id
+     */
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
     public ResponseEntity<?> createPromoter(@PathVariable("name") String name, @RequestParam("description") String description, @RequestParam("url") String url){
         Promoter savedPromoter = promoterRepository.save(new Promoter(name, description, url));
@@ -43,6 +56,12 @@ public class PromoterController {
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * update promoter information
+     *
+     * @param id
+     * @param promoterClub
+     */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
     public void updateClub(@PathVariable("id") Long id, @RequestBody Promoter promoterClub){
         promoterClub = promoterRepository.save(promoterClub);

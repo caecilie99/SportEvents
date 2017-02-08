@@ -17,7 +17,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * REST controller for competitions
+ * REST controller to manage competitions for events
+ * Each event can have one or more competitions
  *
  * @author Birgit Reiter
  * @version 1.0
@@ -33,9 +34,9 @@ public class CompetitionController {
     private CompetitionRepository competitionRepository;
 
     /**
-     * find all competitions for one event
+     * find all competitions for event
      *
-     * @return list of events
+     * @return list of competitions
      */
     @RequestMapping(path = "", method = RequestMethod.GET)
     public List<Competition> getCompetitions(@PathVariable("eventid") Long eventId){
@@ -44,12 +45,12 @@ public class CompetitionController {
     }
 
     /**
-     * create new competition and return new location for competition, identified by id
+     * create and save new competition, return new location for competition, identified by id
      *
      * @param name
      * @param description
      * @param eventId
-     * @return response result
+     * @return url with new id
      */
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
     public ResponseEntity<?> createEvent(@PathVariable("name") String name, @PathVariable("eventid") Long eventId, @RequestParam("description") String description, @RequestParam("fee") Double fee){
@@ -65,6 +66,14 @@ public class CompetitionController {
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * TODO check
+     *
+     * find and return all participnts for competitions
+     *
+     * @param eventId
+     * @return list of participants
+     */
     @RequestMapping(path = "participants", method = RequestMethod.POST)
     public List<Participant> getParticipantsForEvent(@PathVariable("eventid") Long eventId) {
         return competitionRepository.findParticipantsByEventId(eventId);
