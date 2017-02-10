@@ -19,6 +19,7 @@ export default class EventDetail extends React.Component {
                 return response.json() })
             .then( (json) => {
                 console.log("Success");
+                console.log("Picture ", json.image);
                 this.setState({event: json});
             });
         console.log('GET /event/'+this.props.params.id+'/competition');
@@ -49,7 +50,7 @@ export default class EventDetail extends React.Component {
                     <div className="panel-body text-left nopadding">
                         <div className="media">
                             <div className="media-left media-middle">
-                                <img className="media-object" src="http://lorempixel.com/200/200"/>
+                                <img className="media-object" src={'data:image/jpg;base64,'+this.state.event.image}/>
                             </div>
                             <div className="media-body">
                                 <h4 className="media-heading">{this.state.event.description}</h4>

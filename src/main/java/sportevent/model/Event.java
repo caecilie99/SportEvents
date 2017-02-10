@@ -35,6 +35,10 @@ public class Event  implements Serializable {
 	// full description
 	private String description;
 
+	// image for event
+	@Lob
+	private byte[] image;
+
 	@OneToMany(mappedBy = "event")
 	@JsonIgnore
 	// list of all possible competitions

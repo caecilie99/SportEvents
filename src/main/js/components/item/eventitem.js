@@ -15,9 +15,11 @@ export default class EventItem extends React.Component {
                         <h5>{Formatter.formatDate(this.props.event.date)}</h5>
                     </div>
                     <div className="panel-body text-left nopadding">
-                        <Link to={"events/"+this.props.event.id}>
-                            <img src="http://lorempixel.com/200/200"/>
-                        </Link>
+                        <div className="thumbnail">
+                            <Link to={"events/"+this.props.event.id}>
+                                <img src={'data:image/jpg;base64,'+this.props.event.image}/>
+                            </Link>
+                        </div>
                         <p>{this.props.event.description}</p>
                     </div>
                 </div>
