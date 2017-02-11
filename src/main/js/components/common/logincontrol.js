@@ -18,6 +18,7 @@ export default class LoginControl extends React.Component {
     handleLogoutClick() {
         Auth.deauthenticateUser();
         this.setState({isLoggedIn: false});
+        this.context.router.replace('/');
     }
 
     render() {

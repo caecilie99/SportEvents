@@ -58,7 +58,7 @@ public class User implements Serializable{
         // pone number for contact
         private String phone;
 
-        @Column(nullable = false)
+        @Column(nullable = false, unique = true)
         // username to sign in
         private String username;
 

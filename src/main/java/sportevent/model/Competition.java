@@ -59,12 +59,6 @@ public class Competition  implements Serializable {
     // assigned event
     private Event event;
 
-    @OneToMany
-    @JoinColumn(name = "agegroup_id")
-    //@JsonIgnore
-    // agegroups, used for restrictions for the age of participants
-    private Set<AgeGroup> ageGroup = new HashSet<AgeGroup>();
-
     public Competition() {
     }
 

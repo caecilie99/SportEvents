@@ -30,6 +30,7 @@ public interface ParticipantRepository extends CrudRepository<Participant, Long>
      * @return pariticipant
      */
     public Participant findById(Long id);
-    //public Participant findByName(String name);
+
+    public List<Participant> findByClub_id(Long clubid);
 
 }

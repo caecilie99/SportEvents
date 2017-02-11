@@ -45,7 +45,7 @@ public class Promoter implements Serializable {
 	private List<Event> event;
 
 	@OneToOne
-	@JoinColumn(name = "contact_id")
+	@JoinColumn(name = "user_id")
 	//@JsonIgnore
 	// user information for sign in
 	private User user;

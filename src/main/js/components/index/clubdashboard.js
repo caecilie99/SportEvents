@@ -3,12 +3,13 @@
 import React from "react"
 import DocumentTitle from "react-document-title";
 import Auth from "../common/auth";
+import ClubParticipantItem from "../item/clubparticipantitem";
 
 export default class ClubDashboard extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {club: []};
+        this.state = {club: [], participants: []};
     }
 
     componentDidMount() {
@@ -27,11 +28,30 @@ export default class ClubDashboard extends React.Component {
                 .then( (json) => {
                     console.log("Success ", json);
                     this.setState({club: json});
+
+                    // get all participants for club
+                    fetch('club/'+this.state.club.id+'/participants', {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization' : Auth.getToken()
+                        }
+                    })
+                        .then( (response) => {
+                            return response.json() })
+                        .then( (json) => {
+                            console.log("Success ", json);
+                            this.setState({participants: json});
+                        });
                 });
         }
     }
 
     render() {
+        var participants = this.state.participants.map(participant =>
+            <ClubParticipantItem key={participant.id} participant={participant}/>
+        );
         return (
             <DocumentTitle title="Dashboard">
 
@@ -43,6 +63,19 @@ export default class ClubDashboard extends React.Component {
                     </div>
                     <div className="panel-body text-left nopadding">
 
+                        <table className="table">
+                            <thead>
+                            <tr>
+                                <th>Lastname</th>
+                                <th>Firstname</th>
+                                <th>year</th>
+                                <th>club</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {participants}
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>

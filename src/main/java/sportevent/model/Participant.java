@@ -57,12 +57,6 @@ public class Participant  implements Serializable {
 	// assigned competitions
 	private Set<Competition> competition = new HashSet<Competition>();
 
-    @OneToOne
-    @JoinColumn(name="agegroup_id")
-    //@JsonIgnore
-	// assigned agegroup
-	private AgeGroup ageGroup;
-
 	public Participant() {
 	}
 

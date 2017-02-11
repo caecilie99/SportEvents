@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sportevent.dao.ClubRepository;
+import sportevent.dao.ParticipantRepository;
 import sportevent.model.Club;
 
 import java.net.URI;
@@ -24,6 +25,9 @@ public class ClubController {
 
     @Autowired
     private ClubRepository clubRepository;
+
+    @Autowired
+    private ParticipantRepository participantRepository;
 
     /**
      * read all clubs from db
@@ -66,4 +70,8 @@ public class ClubController {
         updateClub = clubRepository.save(updateClub);
     }
 
+    @RequestMapping(path = "{id}/participants", method = RequestMethod.GET)
+    public List getParticipantsForClub(@PathVariable("id") Long id) {
+        return participantRepository.findByClub_id(id);
+    }
 }

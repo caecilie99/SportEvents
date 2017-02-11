@@ -76,6 +76,7 @@ public class UserControllerRESTTest {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
 
         // start with enpty tables
+        this.clubRepository.deleteAll();
         this.userRepository.deleteAll();
     }
 
@@ -83,7 +84,7 @@ public class UserControllerRESTTest {
     public void shouldCreateNewUser() throws Exception {
         //User newUser = new User("Doe", "John", "test@mail.com", "doe", "sport");
         this.mockMvc.perform(post("/user/{username}", "doe").param("lastname", "Doe").param("firstname", "John")
-                .param("email", "test@mail.com").param("password", "sport")
+                .param("email", "test@mail.com").param("password", "$2a$06$XS6vFeumbiaJR1TIxAxazO7QyaWfy62oIA8e0Ww5/rjhlI4ro0J5m")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
         assertNotNull(userRepository.findByUsername("doe"));
@@ -91,7 +92,7 @@ public class UserControllerRESTTest {
 
     @Test
     public void shouldCreateAndUpdateUser() throws Exception {
-        User newUser = new User("Doe", "John", "test@mail.com", "doe", "sport");
+        User newUser = new User("Doe", "John", "test@mail.com", "doe", "$2a$06$XS6vFeumbiaJR1TIxAxazO7QyaWfy62oIA8e0Ww5/rjhlI4ro0J5m");
         assertNotNull(userRepository.save(newUser));
 
         this.mockMvc.perform(put("/user/{id}", newUser.getId()).param("firstname", "Mike")
@@ -139,7 +140,7 @@ public class UserControllerRESTTest {
 
     @Test
     public void shouldFindUserByName() throws Exception {
-        User newUser = new User("Doe", "John", "test@mail.com", "doe", "sport");
+        User newUser = new User("Doe", "John", "test@mail.com", "doe", "$2a$06$XS6vFeumbiaJR1TIxAxazO7QyaWfy62oIA8e0Ww5/rjhlI4ro0J5m");
         assertNotNull(userRepository.save(newUser));
 
         this.mockMvc.perform(get("/user/{name}", newUser.getUsername())
