@@ -9,7 +9,7 @@ export default class EventItem extends React.Component {
     render() {
         return (
             <div key={this.props.event.id} className="col-sm-6 col-md-3">
-                <div  key={this.props.event.id} className="panel panel-default">
+                <div className="panel panel-default">
                     <div className="panel-heading">
                         <h4 className="panel-title">{this.props.event.name}</h4>
                         <h5>{Formatter.formatDate(this.props.event.date)}</h5>

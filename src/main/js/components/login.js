@@ -43,6 +43,7 @@ export default class LoginPage extends React.Component {
         // create a string for an HTTP body message
         const username = encodeURIComponent(this.state.user.username);
         const password = encodeURIComponent(this.state.user.password);
+        console.log("username: ", username, "passwort: ", password)
 
         // Send username and password to server and get response
         fetch('/api/auth', {
@@ -57,28 +58,28 @@ export default class LoginPage extends React.Component {
             })
         }).then(function(response) {
             if(response.status == 200) {
-                // success
-
                 // change the component-container state
                 this.setState({
                     errors: {}
                 });
 
-                // save the token
-                Auth.authenticateUser(username, response.token);
-
-                // change the current URL to /
-                this.context.router.replace('/');
+                // Examine the text in the response
+                response.json().then(function(json) {
+                    // save the token
+                    console.log("user ", username, "token ", json.token)
+                    Auth.authenticateUser(username, json.token);
+                    if (Auth.isUserAuthenticated())
+                    // change the current URL to /dashboard
+                        this.context.router.replace('/dashboard');
+                }.bind(this));
 
             } else {
-                // failure
-
                 // change the component state
                 const errors = response.errors ? response.errors : {};
-                errors.summary = response.message;
+                errors.summary = "Fehler bei der Authentifizierung"//response.message;
 
                 this.setState({
-                    errors
+                    errors : errors
                 });
             }
         }.bind(this));
@@ -104,18 +105,23 @@ export default class LoginPage extends React.Component {
      * Render the component.
      */
     render() {
+        console.log("Render");
         return (
-            <form onSubmit={this.processForm}>
-                <div class="form-group">
-                    <input type="text" name="username" class="form-control" placeholder="username" value={this.state.user.username} onChange={this.changeUser}/>
-                    <input type="password" name="password" class="form-control" placeholder="password" value={this.state.user.password} onChange={this.changeUser}/>
+            <div className="row justify-content-end">
+                <div className="col-sm-6 pull-right">
+                    <form onSubmit={this.processForm}>
+                        {this.state.errors.summary && <p className="alert alert-danger">{this.state.errors.summary}</p>}
+                        <div className="form-group">
+                            <input type="text" name="username" className="form-control" placeholder="username" value={this.state.user.username} onChange={this.changeUser}/>
+                            <input type="password" name="password" className="form-control" placeholder="password" value={this.state.user.password} onChange={this.changeUser}/>
+                        </div>
+                        <button type="submit" className="btn btn-default">Login</button>
+                    </form>
                 </div>
-                <button type="submit" class="btn btn-default">Login</button>
-            </form>
+            </div>
 
         );
     }
-
 }
 
 LoginPage.contextTypes = {

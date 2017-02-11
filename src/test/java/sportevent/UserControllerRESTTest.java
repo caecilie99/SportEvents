@@ -17,7 +17,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import sportevent.controller.UserController;
+import sportevent.dao.ClubRepository;
 import sportevent.dao.UserRepository;
+import sportevent.model.Club;
 import sportevent.model.User;
 
 import java.io.IOException;
@@ -46,6 +48,9 @@ public class UserControllerRESTTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ClubRepository clubRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -133,16 +138,30 @@ public class UserControllerRESTTest {
     }
 
     @Test
-    public void shouldFindUserById() throws Exception {
+    public void shouldFindUserByName() throws Exception {
         User newUser = new User("Doe", "John", "test@mail.com", "doe", "sport");
         assertNotNull(userRepository.save(newUser));
 
-        this.mockMvc.perform(get("/user/{id}", newUser.getId())
+        this.mockMvc.perform(get("/user/{name}", newUser.getUsername())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.username", is("doe")))
                 .andExpect(jsonPath("$.firstname", is("John")))
                 .andExpect(jsonPath("$.lastname", is("Doe")))
                 .andExpect(jsonPath("$.email", is("test@mail.com")));
+    }
+
+    @Test
+    public void shouldFindClubByUserName() throws Exception {
+        User newUser = new User("Doe", "John", "test@mail.com", "doe", "$2a$06$XS6vFeumbiaJR1TIxAxazO7QyaWfy62oIA8e0Ww5/rjhlI4ro0J5m");
+        assertNotNull(userRepository.save(newUser));
+
+        Club newClub = new Club("TSV Hintertupfingen");
+        newClub.setUser(newUser);
+        assertNotNull(clubRepository.save(newClub));
+
+        this.mockMvc.perform(get("/user/{name}/club", newUser.getUsername())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name", is("TSV Hintertupfingen")));
     }
 
 }

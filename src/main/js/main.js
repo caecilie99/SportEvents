@@ -4,6 +4,7 @@ import React from "react"
 import ReactDOM from "react-dom";
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router';
 import Events from "./components/index/events";
+import DashBoard from "./components/index/clubdashboard";
 import EventDetail from "./components/detail/eventdetail";
 import Body from "./components/body";
 import About from "./components/about";
@@ -16,6 +17,7 @@ ReactDOM.render(
 			<Route path="/events/:id" component={EventDetail}/>
 			<Route path="/about" component={About}/>
 			<Route path="/login" component={Login}/>
+			<Route path="/dashboard" component={DashBoard}/>
 		</Route>
 	</Router>,
 	document.getElementById('app')

@@ -101,8 +101,7 @@ public class ClubControllerRESTTest {
 
         // create new club
         this.mockMvc.perform(post("/club/{name}", club1))
-                .andExpect(status().isCreated())
-                .andExpect(header().string("location", containsString("http://localhost/club/")));
+                .andExpect(status().isCreated());
 
         // get club from repository
         Club newClub = clubRepository.findByName(club1);

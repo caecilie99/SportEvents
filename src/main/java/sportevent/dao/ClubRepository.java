@@ -38,4 +38,10 @@ public interface ClubRepository extends CrudRepository<Club, Long> {
      */
     public Club findByName(String name);
 
+    /**
+     * find club by assigned user_id
+     * @param userid
+     * @return
+     */
+    public Club findByUser_id(Long userid);
 }

@@ -38,7 +38,7 @@ public class Club implements Serializable {
     private List<Participant> participant;
 
     @OneToOne
-    @JoinColumn(name = "contact_id")
+    @JoinColumn(name = "user_id")
     //@JsonIgnore
     // user information for sign in
     private User user;

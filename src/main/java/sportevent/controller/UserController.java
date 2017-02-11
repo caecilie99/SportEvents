@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import sportevent.dao.ClubRepository;
 import sportevent.dao.UserRepository;
+import sportevent.model.Club;
 import sportevent.model.User;
 
 import java.net.URI;
@@ -24,6 +26,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ClubRepository clubRepository;
 
     /**
      * create and save new user
@@ -83,13 +88,28 @@ public class UserController {
     }
 
     /**
-     * find user by id
+     * find user by username
      *
-     * @param id
+     * @param name
      * @return
      */
-    @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public User findUser(@PathVariable("id") Long id){
-        return userRepository.findById(id);
+    @RequestMapping(path = "{name}", method = RequestMethod.GET)
+    public User findUser(@PathVariable("name") String name){
+        return userRepository.findByUsername(name);
+    }
+
+    /**
+     * find user by username
+     *
+     * @param name
+     * @return
+     */
+    @RequestMapping(path = "{name}/club", method = RequestMethod.GET)
+    public Club findClubByUser(@PathVariable("name") String name){
+        User user = userRepository.findByUsername(name);
+        if (user!=null) {
+            return clubRepository.findByUser_id(user.getId());
+        } else
+            return null;
     }
 }

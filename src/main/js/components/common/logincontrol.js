@@ -1,6 +1,5 @@
 import React, { PropTypes }  from "react"
 import { Link } from 'react-router'
-import NavLink from "./navlink"
 import Auth from "./auth"
 
 export default class LoginControl extends React.Component {

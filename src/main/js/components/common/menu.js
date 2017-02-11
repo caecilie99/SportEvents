@@ -11,7 +11,7 @@ export default class Menu extends React.Component {
             <header className="navbar navbar-inverse">
                 <div className="container">
                     <div className="navbar-header">
-                        <Link className="navbar-brand" to="events">Sport<span className="light">Event</span></Link>
+                        <Link className="navbar-brand">Sport<span className="light">Event</span></Link>
                     </div>
                     <nav className="navbar-collapse navbar-page-header navbar-left">
                         <ul className="nav navbar-nav  navbar-left" role="nav">
