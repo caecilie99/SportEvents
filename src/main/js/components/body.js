@@ -1,10 +1,13 @@
 'use strict';
 
 import React from "react"
-import Header from "./common/header";
 import Footer from "./common/footer";
 import Menu from "./common/menu";
 
+/**
+ * main body component
+ * shows menu, main and footer
+ */
 export default class Body extends React.Component {
     render() {
         return (

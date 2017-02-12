@@ -2,8 +2,11 @@ package sportevent.dao;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.servlet.tags.form.SelectTag;
+import sportevent.model.Competition;
 import sportevent.model.Participant;
 import java.util.List;
+import java.util.Set;
 
 /**
  * interface repository for competitions
@@ -31,5 +34,7 @@ public interface ParticipantRepository extends CrudRepository<Participant, Long>
     public Participant findById(Long id);
 
     public List<ParticipantWithCompetitions> findByClub_id(Long clubid);
+
+    public Participant findByIdAndCompetition_Id(Long id, Long compId);
 
 }

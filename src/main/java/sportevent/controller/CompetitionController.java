@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sportevent.dao.CompetitionRepository;
 import sportevent.dao.CompetitionWithParticipants;
 import sportevent.dao.EventRepository;
+import sportevent.dao.EventWithImage;
 import sportevent.model.Competition;
 import sportevent.model.Event;
 import sportevent.model.Participant;
@@ -40,8 +41,8 @@ public class CompetitionController {
      * @return list of competitions
      */
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<CompetitionWithParticipants> getCompetitions(@PathVariable("eventid") Long eventId){
-        List<CompetitionWithParticipants> comp =competitionRepository.findByEventId(eventId);
+    public List<Competition> getCompetitions(@PathVariable("eventid") Long eventId){
+        List<Competition> comp =competitionRepository.findByEventId(eventId);
         return comp;
     }
 
@@ -55,7 +56,7 @@ public class CompetitionController {
      */
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
     public ResponseEntity<?> createEvent(@PathVariable("name") String name, @PathVariable("eventid") Long eventId, @RequestParam("description") String description, @RequestParam("fee") Double fee){
-        Event event = eventRepository.findById(eventId);
+        Event event = eventRepository.findOne(eventId);
         Competition savedCompetition = competitionRepository.save(new Competition(name, description, fee, event));
         if (savedCompetition!=null){
             // Build new path for event and return as new location
@@ -75,8 +76,8 @@ public class CompetitionController {
      * @param eventId
      * @return list of participants
      */
-    @RequestMapping(path = "participants", method = RequestMethod.POST)
+/*    @RequestMapping(path = "participants", method = RequestMethod.POST)
     public List<Participant> getParticipantsForEvent(@PathVariable("eventid") Long eventId) {
-        return competitionRepository.findParticipantsByEventId(eventId);
-    }
+        return competitionRepository.f(eventId);
+    }*/
 }

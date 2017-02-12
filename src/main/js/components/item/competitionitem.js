@@ -4,11 +4,15 @@ import React from "react"
 import {Link} from 'react-router';
 import ParticipantItem from "../item/participantitem";
 
+/**
+ * show competition for event,
+ * used in eventsdetail
+ */
 
 export default class CompetitionItem extends React.Component {
 
     render() {
-        console.log('Render competition '+this.props.competition.id);
+        // set participants for participantitem, unique key identifier is very important for react!!!
         var participants = this.props.competition.participants.map(participant =>
             <ParticipantItem key={participant.id} participant={participant}/>
         );
@@ -29,7 +33,7 @@ export default class CompetitionItem extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {participants}
+                        {participants}
                     </tbody>
                 </table>
             </div>

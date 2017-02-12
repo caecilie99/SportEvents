@@ -1,6 +1,9 @@
 import React, { PropTypes } from 'react';
 import Auth from './common/auth';
 
+/**
+ * login for user
+ */
 export default class LoginPage extends React.Component {
 
     /**
@@ -8,14 +11,6 @@ export default class LoginPage extends React.Component {
      */
     constructor(props, context) {
         super(props, context);
-
-        const storedMessage = localStorage.getItem('successMessage');
-        let successMessage = '';
-
-        if (storedMessage) {
-            successMessage = storedMessage;
-            localStorage.removeItem('successMessage');
-        }
 
         // set the initial component state
         this.state = {
@@ -27,12 +22,14 @@ export default class LoginPage extends React.Component {
             }
         };
 
+        // important to get access to this in functions
         this.processForm = this.processForm.bind(this);
         this.changeUser = this.changeUser.bind(this);
     }
 
     /**
      * Process the form.
+     * Authenticate user from a remote endpoint
      *
      * @param {object} event - the JavaScript event object
      */
@@ -58,6 +55,7 @@ export default class LoginPage extends React.Component {
             })
         }).then(function(response) {
             if(response.status == 200) {
+                // Success
                 // change the component-container state
                 this.setState({
                     errors: {}
@@ -69,11 +67,12 @@ export default class LoginPage extends React.Component {
                     console.log("user ", username, "token ", json.token)
                     Auth.authenticateUser(username, json.token);
                     if (Auth.isUserAuthenticated())
-                    // change the current URL to /dashboard
+                        // change the current URL to /dashboard
                         this.context.router.replace('/dashboard');
                 }.bind(this));
 
             } else {
+                // Failure
                 // change the component state
                 const errors = response.errors ? response.errors : {};
                 errors.summary = "Fehler bei der Authentifizierung"//response.message;
@@ -88,6 +87,7 @@ export default class LoginPage extends React.Component {
 
     /**
      * Change the user object.
+     * invoked by onChange
      *
      * @param {object} event - the JavaScript event object
      */
@@ -124,6 +124,7 @@ export default class LoginPage extends React.Component {
     }
 }
 
+// import for access to router
 LoginPage.contextTypes = {
     router: PropTypes.object.isRequired
 };

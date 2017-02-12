@@ -5,9 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import sportevent.dao.ClubRepository;
-import sportevent.dao.ParticipantRepository;
+import sportevent.dao.*;
 import sportevent.model.Club;
+import sportevent.model.Competition;
+import sportevent.model.Participant;
 
 import java.net.URI;
 import java.util.List;
@@ -28,6 +29,9 @@ public class ClubController {
 
     @Autowired
     private ParticipantRepository participantRepository;
+
+    @Autowired
+    private CompetitionRepository competitionRepository;
 
     /**
      * read all clubs from db
@@ -71,7 +75,8 @@ public class ClubController {
     }
 
     @RequestMapping(path = "{id}/participants", method = RequestMethod.GET)
-    public List getParticipantsForClub(@PathVariable("id") Long id) {
+    public List<ParticipantWithCompetitions> getParticipantsForClub(@PathVariable("id") Long id) {
+        //return competitionRepository.findByParticipantsClub_id(id);
         return participantRepository.findByClub_id(id);
     }
 }

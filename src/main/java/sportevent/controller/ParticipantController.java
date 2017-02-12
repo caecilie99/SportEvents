@@ -27,12 +27,6 @@ import java.util.Set;
 public class ParticipantController {
 
     @Autowired
-    private EventRepository eventRepository;
-
-    @Autowired
-    private CompetitionRepository competitionRepository;
-
-    @Autowired
     private ClubRepository clubRepository;
 
     @Autowired
@@ -62,6 +56,13 @@ public class ParticipantController {
             return ResponseEntity.created(location).build();
         } else
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @RequestMapping(path = "/participant/{id}/delete", method = RequestMethod.DELETE)
+    public void deleteCompetitionForParticipant(@PathVariable("id") Long id) {
+        Participant part = participantRepository.findOne(id);
+        participantRepository.delete(part);
+
     }
 
 }

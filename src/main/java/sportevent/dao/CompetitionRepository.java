@@ -24,9 +24,11 @@ public interface CompetitionRepository extends CrudRepository<Competition, Long>
      * @param event_id
      * @return list of competitions
      */
-    public List<CompetitionWithParticipants> findByEventId(Long event_id);
+    public List<Competition> findByEventId(Long event_id);
+
+    public List<Competition> findByParticipantsClub_id(Long club_id);
 
     // TODO needed?
-    public List<Participant> findParticipantsByEventId(Long event_id);
+    //public List<Participant> findParticipantsByEventId(Long event_id);
 
 }

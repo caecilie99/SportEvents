@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * Created by Birgit on 12.02.2017.
  */
-interface ParticipantWithCompetitions {
+public interface ParticipantWithCompetitions {
     Long getId();
 
     // lastname

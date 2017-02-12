@@ -1,41 +1,56 @@
 'use strict';
 
-import React from "react"
-import client from "../../client";
+import React from "react";
 import Formatter from "../../api/formatter";
 import CompetitionItem from "../item/competitionitem";
 
+/**
+ * show all details for event
+ * date, name, description, image, promoter, list of competitions with participants
+ */
 export default class EventDetail extends React.Component {
 
+    /**
+     * constructor
+     *
+     * @param props
+     */
     constructor(props) {
         super(props);
         this.state = {event: [], competitions: []};
     }
 
+    /**
+     * is invoked immediately after a component is mounted
+     * load data from a remote endpoint
+     */
     componentWillMount () {
-        console.log('GET /event/'+this.props.params.id);
+        // load event data from a remote endpoint
         fetch('/event/'+this.props.params.id)
             .then( (response) => {
                 return response.json() })
             .then( (json) => {
-                console.log("Success");
-                console.log("Picture ", json.image);
+                // set set with received data
                 this.setState({event: json});
             });
         console.log('GET /event/'+this.props.params.id+'/competition');
+        // load competition data from a remote endpoint
         fetch('/event/'+this.props.params.id+'/competition')
             .then( (response) => {
                 return response.json() })
             .then( (json) => {
-                console.log("Success competitions");
-                console.log(json);
+                // set set with received data
                 this.setState({competitions: json});
-
             });
     }
 
+    /**
+     * render component
+     *
+     * @returns {XML}
+     */
     render() {
-        console.log('Render /events/'+this.props.params.id);
+        // set competitions, unique key identifier is very important for react!!!
         var competitions = this.state.competitions.map(competition =>
             <CompetitionItem key={competition.id} competition={competition}/>
         );

@@ -4,6 +4,7 @@ import React from "react"
 import { Link } from 'react-router'
 import NavLink from "./navlink"
 import LoginControl from './logincontrol';
+import Auth from './auth';
 
 export default class Menu extends React.Component {
     render() {
@@ -16,6 +17,7 @@ export default class Menu extends React.Component {
                     <nav className="navbar-collapse navbar-page-header navbar-left">
                         <ul className="nav navbar-nav  navbar-left" role="nav">
                             <li><NavLink to="events">Events</NavLink></li>
+                            {Auth.isUserAuthenticated() && <li><NavLink to="dashboard">Dashboard</NavLink></li>}
                             <li><NavLink to="about">About</NavLink></li>
                         </ul>
                     </nav>

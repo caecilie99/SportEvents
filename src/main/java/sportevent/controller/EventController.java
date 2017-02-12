@@ -40,9 +40,9 @@ public class EventController {
      */
     @RequestMapping(path = "/list", method = RequestMethod.GET)
     public List<EventWithImage> getEvents(@RequestParam(value = "promoterid", required = false) Long promoterid){
-        if (promoterid!=null)
+        /*if (promoterid!=null)
             return eventRepository.findByPromoterId(promoterid);
-        else
+        else*/
             return eventRepository.findAllProjectedBy();
 
     }
@@ -55,8 +55,9 @@ public class EventController {
      *
      */
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public Event getEvent(@PathVariable("id") Long id){
-        return eventRepository.findById(id);
+    public EventWithImage getEvent(@PathVariable("id") Long id){
+        EventWithImage test = eventRepository.findById(id);
+        return test;
     }
 
     /**
