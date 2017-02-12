@@ -3,7 +3,6 @@ package sportevent.dao;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import sportevent.model.Participant;
-
 import java.util.List;
 
 /**
@@ -31,6 +30,6 @@ public interface ParticipantRepository extends CrudRepository<Participant, Long>
      */
     public Participant findById(Long id);
 
-    public List<Participant> findByClub_id(Long clubid);
+    public List<ParticipantWithCompetitions> findByClub_id(Long clubid);
 
 }

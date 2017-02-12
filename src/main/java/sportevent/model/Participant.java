@@ -74,4 +74,5 @@ public class Participant  implements Serializable {
 		this.club = club;
 		this.competition = competitions;
 	}
+
 }

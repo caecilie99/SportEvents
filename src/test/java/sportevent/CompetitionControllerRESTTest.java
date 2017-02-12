@@ -143,11 +143,11 @@ public class CompetitionControllerRESTTest {
                 .andExpect(status().isCreated());
 
         // get events for promoter
-        List<Competition> competitions = competitionRepository.findByEventId(event1Obj.getId());
+        List<CompetitionWithParticipants> competitions = competitionRepository.findByEventId(event1Obj.getId());
         assertNotNull(competitions);
 
         // check, if list contains our new event
-        Competition firstCompetition = competitions.get(0);
+        CompetitionWithParticipants firstCompetition = competitions.get(0);
         assertNotNull(firstCompetition);
         assertEquals(firstCompetition.getName(), competiton1);
     }

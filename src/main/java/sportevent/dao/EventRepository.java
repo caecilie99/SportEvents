@@ -23,7 +23,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
      * find all events in repository
      * @return list of events
      */
-    public List<Event> findAll();
+    public List<EventWithImage> findAllProjectedBy();
 
     /**
      * find events from promoter
@@ -31,7 +31,7 @@ public interface EventRepository extends CrudRepository<Event, Long> {
      * @param promoterid
      * @return list of events
      */
-    public List<Event> findByPromoterId(@Param("promoterid") Long promoterid);
+    public List<EventWithImage> findByPromoterId(@Param("promoterid") Long promoterid);
 
     /**
      * find event by id

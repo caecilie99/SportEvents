@@ -49,13 +49,13 @@ public class Competition  implements Serializable {
     private Double fee;
 
     @ManyToMany(mappedBy = "competition", fetch = FetchType.LAZY)
-    //@JsonIgnore
+    @JsonIgnore
     // participants assigned to competition
     private Set<Participant> participants = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "event_id")
-    @JsonIgnore
+    //@JsonIgnore
     // assigned event
     private Event event;
 

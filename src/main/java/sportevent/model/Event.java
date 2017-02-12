@@ -37,6 +37,7 @@ public class Event  implements Serializable {
 
 	// image for event
 	@Lob
+	@JsonIgnore
 	private byte[] image;
 
 	@OneToMany(mappedBy = "event")

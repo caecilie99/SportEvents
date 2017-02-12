@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sportevent.dao.CompetitionRepository;
+import sportevent.dao.CompetitionWithParticipants;
 import sportevent.dao.EventRepository;
 import sportevent.model.Competition;
 import sportevent.model.Event;
@@ -39,8 +40,8 @@ public class CompetitionController {
      * @return list of competitions
      */
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<Competition> getCompetitions(@PathVariable("eventid") Long eventId){
-        List<Competition> comp =competitionRepository.findByEventId(eventId);
+    public List<CompetitionWithParticipants> getCompetitions(@PathVariable("eventid") Long eventId){
+        List<CompetitionWithParticipants> comp =competitionRepository.findByEventId(eventId);
         return comp;
     }
 

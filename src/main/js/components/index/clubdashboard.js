@@ -55,21 +55,18 @@ export default class ClubDashboard extends React.Component {
         return (
             <DocumentTitle title="Dashboard">
 
-                <div key={this.state.club.id} className="panel panel-default">
+                <div key={'club'+this.state.club.id} className="panel panel-default">
                     <div  className="panel-heading">
                         <h4>Dashboard - {this.state.club.name}</h4>
-                        <h5>Responsible:</h5>
-                        <p><i>Name: </i></p>
                     </div>
                     <div className="panel-body text-left nopadding">
-
+                        <p>You have registered the following persons to events:</p>
                         <table className="table">
                             <thead>
                             <tr>
                                 <th>Lastname</th>
                                 <th>Firstname</th>
                                 <th>year</th>
-                                <th>club</th>
                             </tr>
                             </thead>
                             <tbody>

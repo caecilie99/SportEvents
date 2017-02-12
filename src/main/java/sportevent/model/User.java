@@ -55,11 +55,12 @@ public class User implements Serializable{
         // email for contact
         private String email;
 
-        // pone number for contact
+        // phone number for contact
         private String phone;
 
         @Column(nullable = false, unique = true)
         // username to sign in
+        @JsonIgnore
         private String username;
 
         @Column(nullable = false)

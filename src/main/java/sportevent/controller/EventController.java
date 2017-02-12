@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sportevent.dao.EventRepository;
+import sportevent.dao.EventWithImage;
 import sportevent.dao.PromoterRepository;
 import sportevent.model.Event;
 import sportevent.model.Promoter;
@@ -38,11 +39,11 @@ public class EventController {
      * @return
      */
     @RequestMapping(path = "/list", method = RequestMethod.GET)
-    public List<Event> getEvents(@RequestParam(value = "promoterid", required = false) Long promoterid){
+    public List<EventWithImage> getEvents(@RequestParam(value = "promoterid", required = false) Long promoterid){
         if (promoterid!=null)
             return eventRepository.findByPromoterId(promoterid);
         else
-            return eventRepository.findAll();
+            return eventRepository.findAllProjectedBy();
 
     }
 
