@@ -14,6 +14,7 @@ import sportevent.model.Competition;
 import sportevent.model.Participant;
 
 import java.net.URI;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,37 +33,44 @@ public class ParticipantController {
     @Autowired
     private ParticipantRepository participantRepository;
 
+    @Autowired
+    private CompetitionRepository competitionRepository;
+
     /**
      * add participant to competetion for event
      *
-     * @param clubId
      * @param eventId
-     * @param lastName
-     * @param firstName
-     * @param year
-     * @return response result
+     * @param clubId
+     * @param compId
+     * @param participant
+     * @return
      */
-    @RequestMapping(path = "/event/{eventid}/participants/{clubid}/add", method = RequestMethod.POST)
+    @RequestMapping(path = "/event/{eventid}/{compid}/participants/{clubid}/add", method = RequestMethod.POST)
     public ResponseEntity<?> addParticipant(@PathVariable("eventid") Long eventId, @PathVariable("clubid") Long clubId,
-                                            @RequestParam("lastname") String lastName, @RequestParam("firstname") String firstName,
-                                            @RequestParam("year") Long year, @RequestParam("competition") Set<Competition> competitions) {
-        Club club = clubRepository.findById(clubId);
-        Participant savedParticipant = participantRepository.save(new Participant(lastName, firstName, year, club, competitions));
-        if (savedParticipant != null) {
-            // Build new path for event and return as new location
-            URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest().replacePath("/event/{eventid}/participants/{clubid}/{id}")
-                    .buildAndExpand(eventId, clubId, savedParticipant.getId()).toUri();
-            return ResponseEntity.created(location).build();
+                                            @PathVariable("compid") Long compId,
+                                            @RequestBody Participant participant) {
+        Club club = clubRepository.findOne(clubId);
+        Competition competition = competitionRepository.findOne(compId);
+        Set<Competition> competitionSet = new HashSet<Competition>();
+        competitionSet.add(competition);
+
+        participant.setClub(club);
+        participant.setCompetition(competitionSet);
+        participantRepository.save(participant);
+
+        if (participant != null) {
+            // response with participant in body and the status set to OK
+            return ResponseEntity.ok(participant);
         } else
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
 
-    @RequestMapping(path = "/participant/{id}/delete", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/participant/{id}", method = RequestMethod.DELETE)
     public void deleteCompetitionForParticipant(@PathVariable("id") Long id) {
         Participant part = participantRepository.findOne(id);
+        //Competition test = competitionRepository.findByIdAndParticipants_Id(id, pid);
         participantRepository.delete(part);
-
     }
 
 }

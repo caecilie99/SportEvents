@@ -30,7 +30,7 @@ export default class ClubDashboard extends React.Component {
         console.log("GET infos for user  ", Auth.getUser(), "Token ", Auth.getToken());
         // load data from a remote endpoint
         if (Auth.isUserAuthenticated()) {
-            fetch('user/'+Auth.getUser()+"/club", {
+            fetch('/user/'+Auth.getUser()+"/club", {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -45,7 +45,7 @@ export default class ClubDashboard extends React.Component {
                     this.setState({club: json});
 
                     // get all participants for club
-                    fetch('club/'+this.state.club.id+'/participants', {
+                    fetch('/club/'+this.state.club.id+'/participants', {
                         method: 'GET',
                         headers: {
                             'Accept': 'application/json',
@@ -72,15 +72,22 @@ export default class ClubDashboard extends React.Component {
     removeParticipant(participant){
         console.log(participant.lastname,participant.firstname,participant.competition[0].name);
         if (Auth.isUserAuthenticated()) {
-            fetch('participant/'+participant.id+'/delete', {
+            fetch('/participant/'+participant.id, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'Authorization' : Auth.getToken()
                 }
-            })
-            fetch('user/'+Auth.getUser()+"/club", {
+            }).then(function(response) {
+                console.log(response.status);
+                var participants = this.state.participants;
+                // delete participant in state
+                participants.splice(participants.indexOf(participant), 1);
+                this.setState({participants});
+            }.bind(this));
+/*
+            fetch('/user/'+Auth.getUser()+"/club", {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -111,6 +118,7 @@ export default class ClubDashboard extends React.Component {
                             console.log("Size ", this.state.participants.length);
                         });
                 });
+*/
         }
     }
 

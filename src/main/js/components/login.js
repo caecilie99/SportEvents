@@ -15,7 +15,6 @@ export default class LoginPage extends React.Component {
         // set the initial component state
         this.state = {
             errors: {},
-            successMessage,
             user: {
                 username: '',
                 password: ''
@@ -40,7 +39,6 @@ export default class LoginPage extends React.Component {
         // create a string for an HTTP body message
         const username = encodeURIComponent(this.state.user.username);
         const password = encodeURIComponent(this.state.user.password);
-        console.log("username: ", username, "passwort: ", password)
 
         // Send username and password to server and get response
         fetch('/api/auth', {

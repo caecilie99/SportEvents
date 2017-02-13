@@ -157,15 +157,12 @@ public class ParticipantControllerRESTTest {
 
     @Test
     public void addParticipantWithCompetitions() throws Exception {
-        List<Competition> competitions = new ArrayList<>();
-        competitions.add(competition1Obj);
-        competitions.add(competition2Obj);
+
         this.mockMvc.perform(post("/event/{eventid}/participants/{clubid}/add", event1Obj.getId(), club1Obj.getId())
                 .param("lastname", lastName1)
                 .param("firstname", firstName1)
                 .param("year", Long.toString(year1))
-                .param("competition", competition1Obj.getId().toString())
-                .param("competition", competition2Obj.getId().toString()))
+                .param("competition", competition1Obj.getId().toString()))
                 .andExpect(status().isCreated());
 
     }
