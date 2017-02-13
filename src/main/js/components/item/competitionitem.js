@@ -95,7 +95,13 @@ export default class CompetitionItem extends React.Component {
                             comp.participants = new Array();
                         comp.participants.push(test);
                         console.log('add ', comp.participants.length, ' ', test.lastname);
-                        this.setState({competition : comp});
+                        this.setState(
+                            {competition : comp,
+                            newparticipant: {
+                            firstname: '',
+                            lastname: '',
+                            year:''
+                        }});
 
                     }.bind(this));
 

@@ -196,8 +196,7 @@ public class EventControllerTest {
         Event event4Obj = new Event(new Date(), event2, "some hot stuff", testPromoter2Obj);
         assertNotNull(eventRepository.save(event4Obj));
 
-        String test = testPromoter1Obj.getId().toString();
-        mockMvc.perform(get("/event/list").param("promoterid", test))
+        mockMvc.perform(get("/event/{promoterid}/list", testPromoter1Obj.getId().toString()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$", hasSize(2)));

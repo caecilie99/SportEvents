@@ -145,7 +145,6 @@ public class UserControllerRESTTest {
 
         this.mockMvc.perform(get("/user/{name}", newUser.getUsername())
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.username", is("doe")))
                 .andExpect(jsonPath("$.firstname", is("John")))
                 .andExpect(jsonPath("$.lastname", is("Doe")))
                 .andExpect(jsonPath("$.email", is("test@mail.com")));

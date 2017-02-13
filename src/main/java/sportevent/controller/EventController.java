@@ -39,12 +39,20 @@ public class EventController {
      * @return
      */
     @RequestMapping(path = "/list", method = RequestMethod.GET)
-    public List<EventWithImage> getEvents(@RequestParam(value = "promoterid", required = false) Long promoterid){
-        /*if (promoterid!=null)
-            return eventRepository.findByPromoterId(promoterid);
-        else*/
-            return eventRepository.findAllProjectedBy();
+    public List<EventWithImage> getEvents(){
+        return eventRepository.findAllProjectedBy();
+    }
 
+    /**
+     * read all events from db and return as JSON
+     * if promoter id not null, read and return events for promoter
+     *
+     * @param promoterid
+     * @return
+     */
+    @RequestMapping(path = "/{promoterid}/list", method = RequestMethod.GET)
+    public List<Event> getEvents(@PathVariable Long promoterid){
+         return eventRepository.findByPromoterId(promoterid);
     }
 
     /**

@@ -158,12 +158,10 @@ public class ParticipantControllerRESTTest {
     @Test
     public void addParticipantWithCompetitions() throws Exception {
 
-        this.mockMvc.perform(post("/event/{eventid}/participants/{clubid}/add", event1Obj.getId(), club1Obj.getId())
-                .param("lastname", lastName1)
-                .param("firstname", firstName1)
-                .param("year", Long.toString(year1))
-                .param("competition", competition1Obj.getId().toString()))
-                .andExpect(status().isCreated());
+        this.mockMvc.perform(post("/event/{eventid}/{compid}/participants/{clubid}/add", event1Obj.getId(), competition1Obj.getId().toString(), club1Obj.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"firstname\":\"Benjamin\",\"lastname\":\"Blümchen\",\"year\":\"1970\"}"))
+                .andExpect(status().isOk());
 
     }
 
