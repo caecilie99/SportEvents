@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sportevent.dao.*;
 import sportevent.model.Club;
-import sportevent.model.Competition;
-import sportevent.model.Participant;
 
 import java.net.URI;
 import java.util.List;
@@ -30,9 +28,6 @@ public class ClubController {
     @Autowired
     private ParticipantRepository participantRepository;
 
-    @Autowired
-    private CompetitionRepository competitionRepository;
-
     /**
      * read all clubs from db
      *
@@ -47,7 +42,7 @@ public class ClubController {
     /**
      * create an save new club
      *
-     * @param name
+     * @param name name of new club
      * @return url with new id
      */
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
@@ -66,17 +61,21 @@ public class ClubController {
     /**
      * update club informations
      *
-     * @param id
-     * @param updateClub
+     * @param id id of club to be updated
+     * @param updateClub new information for club
      */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
     public void updateClub(@PathVariable("id") Long id, @RequestBody Club updateClub){
         updateClub = clubRepository.save(updateClub);
     }
 
+    /**
+     * get all participants for club
+     * @param id id of club
+     * @return list of participants with assigned competitions
+     */
     @RequestMapping(path = "{id}/participants", method = RequestMethod.GET)
     public List<ParticipantWithCompetitions> getParticipantsForClub(@PathVariable("id") Long id) {
-        //return competitionRepository.findByParticipantsClub_id(id);
         return participantRepository.findByClub_id(id);
     }
 }

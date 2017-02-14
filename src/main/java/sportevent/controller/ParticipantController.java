@@ -39,19 +39,22 @@ public class ParticipantController {
     /**
      * add participant to competetion for event
      *
-     * @param eventId
-     * @param clubId
-     * @param compId
-     * @param participant
+     * @param eventId id of event
+     * @param compId id of competition
+     * @param clubId id of club for participant
+     * @param participant participant object with infos like firstname, lastname, year
      * @return ResponseEntitiy
      */
     @RequestMapping(path = "/event/{eventid}/{compid}/participants/{clubid}/add", method = RequestMethod.POST)
     public ResponseEntity<?> addParticipant(@PathVariable("eventid") Long eventId, @PathVariable("clubid") Long clubId,
                                             @PathVariable("compid") Long compId,
                                             @RequestBody Participant participant) {
+        // find club for participant
+        Club club = clubRepository.findOne(clubId);
+
+        // check if participant exists
         // first- and lastname and year unique, should be extended with club_id, but doesn't work
         Participant partExist = participantRepository.findByLastnameAndFirstnameAndYear(participant.getLastname(), participant.getFirstname(), participant.getYear());
-        Club club = clubRepository.findOne(clubId);
 
         if (partExist!=null)
             participant = partExist;
@@ -69,13 +72,16 @@ public class ParticipantController {
             // response with participant in body and the status set to OK
             return ResponseEntity.ok(participant);
         } else
+            // error
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
     /**
-     * Delete participant
-     * @param id
+     * Delete complete participant
+     * actually nbot used from client
+     *
+     * @param id id of participant
      */
     @RequestMapping(path = "/participant/{id}", method = RequestMethod.DELETE)
     public void deleteParticipant(@PathVariable("id") Long id) {
@@ -85,15 +91,20 @@ public class ParticipantController {
     }
 
     /**
-     * Delete participant
-     * @param id
+     * Delete competition for participant
+
+     * @param id id of participant
+     * @param compid id of competition to be deleted
      */
     @RequestMapping(path = "/participant/{id}/{compid}", method = RequestMethod.DELETE)
     public void deleteCompetitionForParticipant(@PathVariable("id") Long id, @PathVariable("compid") Long compid) {
+        // get participant
         Participant part = participantRepository.findOne(id);
+        // get full competition
         Competition comp = competitionRepository.findOne(compid);
+        // remove competiton from participant
         part.getCompetition().remove(comp);
-        //Competition test = competitionRepository.findByIdAndParticipants_Id(id, pid);
+        // save participant
         participantRepository.save(part);
     }
 

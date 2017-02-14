@@ -31,13 +31,14 @@ public class UserController {
     private ClubRepository clubRepository;
 
     /**
-     * create and save new user
+     * create and save new user, contains only required information
+     * actually not used from client, but tested
      *
-     * @param username
-     * @param firstname
-     * @param lastname
-     * @param email
-     * @param password
+     * @param username username for new user
+     * @param firstname firstname
+     * @param lastname lastname
+     * @param email mail address
+     * @param password password
      * @return url with new id
      */
     @RequestMapping(path="{username}", method = RequestMethod.POST)
@@ -57,15 +58,16 @@ public class UserController {
 
     /**
      * update user information
+     * actually not used from client, but tested
      *
-     * @param id
-     * @param firstname
-     * @param lastname
-     * @param email
-     * @param zipcode
-     * @param city
-     * @param adress
-     * @param phone
+     * @param id user id
+     * @param firstname new firstname
+     * @param lastname new lastname
+     * @param email new mail address
+     * @param zipcode new zip code
+     * @param city new city
+     * @param adress new adress
+     * @param phone new phone number
      * @return ResponseEntity
      */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
@@ -95,8 +97,8 @@ public class UserController {
     /**
      * find user by username
      *
-     * @param name
-     * @return
+     * @param name username
+     * @return user object without username and password
      */
     @RequestMapping(path = "{name}", method = RequestMethod.GET)
     public User findUser(@PathVariable("name") String name){
@@ -106,7 +108,7 @@ public class UserController {
     /**
      * find club by username
      *
-     * @param name
+     * @param name username
      * @return club for assigned user
      */
     @RequestMapping(path = "{name}/club", method = RequestMethod.GET)

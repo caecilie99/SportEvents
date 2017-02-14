@@ -33,10 +33,8 @@ public class EventController {
 
     /**
      * read all events from db and return as JSON
-     * if promoter id not null, read and return events for promoter
      *
-     * @param promoterid
-     * @return
+     * @return list of events with images
      */
     @RequestMapping(path = "/list", method = RequestMethod.GET)
     public List<EventWithImage> getEvents(){
@@ -44,11 +42,10 @@ public class EventController {
     }
 
     /**
-     * read all events from db and return as JSON
-     * if promoter id not null, read and return events for promoter
+     * read all events from prometer from db and return as JSON
      *
-     * @param promoterid
-     * @return
+     * @param promoterid id of promoter
+     * @return list of events without images
      */
     @RequestMapping(path = "/{promoterid}/list", method = RequestMethod.GET)
     public List<Event> getEvents(@PathVariable Long promoterid){
@@ -58,8 +55,8 @@ public class EventController {
     /**
      * Find event by id and return event information
      *
-     * @param id
-     * @return event
+     * @param id event id
+     * @return event full event information with image
      *
      */
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
@@ -70,11 +67,13 @@ public class EventController {
 
     /**
      * create and save new event and return new location for event, identified by id
+     * actually not used from client, but tested
+     * image is missing
      *
-     * @param name
-     * @param description
-     * @param date
-     * @param promoterId
+     * @param name name of new event
+     * @param description full description
+     * @param date date for event
+     * @param promoterId promoter id
      * @return url with new id
      */
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
@@ -93,13 +92,14 @@ public class EventController {
 
     /**
      * update event information
+     * actually not used from client, but tested
      *
-     * @param id
-     * @param promoterEvent
+     * @param id id of event to be updated
+     * @param event event object with new informations
      */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public void updateEvent(@PathVariable("id") Long id, @RequestBody Event promoterEvent){
-        promoterEvent = eventRepository.save(promoterEvent);
+    public void updateEvent(@PathVariable("id") Long id, @RequestBody Event event){
+        eventRepository.save(event);
     }
 
 }

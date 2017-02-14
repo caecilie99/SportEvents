@@ -26,6 +26,7 @@ public class PromoterController {
 
     /**
      * find all promoter
+     * actually not used from client
      *
      * @return list of promoter
      */
@@ -37,10 +38,11 @@ public class PromoterController {
 
     /**
      * create and save new promoter
+     * actually not used from client, but tested
      *
-     * @param name
-     * @param description
-     * @param url
+     * @param name name of new promoter
+     * @param description full description
+     * @param url url to get more infomation about promoter
      * @return url with new id
      */
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
@@ -58,9 +60,10 @@ public class PromoterController {
 
     /**
      * update promoter information
+     * actually not used from client, but tested
      *
-     * @param id
-     * @param promoterClub
+     * @param id promoter id
+     * @param promoterClub promoter object with new information
      */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
     public void updateClub(@PathVariable("id") Long id, @RequestBody Promoter promoterClub){

@@ -5,6 +5,8 @@ import java.util.Date;
 
 /**
  * Created by Birgit on 12.02.2017.
+ *
+ * used for full information for event with image
  */
 public interface EventWithImage {
     Long getId();

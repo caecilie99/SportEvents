@@ -24,16 +24,15 @@ public interface PromoterRepository extends CrudRepository<Promoter, Long> {
 
     /**
      * find promoter by id
-     * @param id
+     * @param id promoter id
      * @return promoter
      */
     public Promoter findById(Long id);
 
     /**
-     * TODO needed?
      * find promoter by name
-     * @param name
-     * @return
+     * @param name promoter name
+     * @return promoter
      */
     public Promoter findByName(String name);
 

@@ -6,6 +6,8 @@ import java.util.Set;
 
 /**
  * Created by Birgit on 12.02.2017.
+ *
+ * projection used in clubcontroller to get participant with competitions
  */
 public interface ParticipantWithCompetitions {
     Long getId();

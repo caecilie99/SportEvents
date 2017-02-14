@@ -14,9 +14,9 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Long> {
 
     /**
-     * TODO needed?
      * find user by id
-     * @param id
+     *
+     * @param id user id
      * @return user
      */
     public User findById(Long id);
@@ -24,7 +24,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     /**
      * find user by name
      *
-     * @param username
+     * @param username username
      * @return user
      */
     public User findByUsername(String username);

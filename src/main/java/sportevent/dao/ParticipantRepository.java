@@ -18,25 +18,35 @@ import java.util.Set;
 public interface ParticipantRepository extends CrudRepository<Participant, Long> {
 
     /**
-     * TODO needed?
-     *
      * find all participants
      * @return list of participants
      */
     public List<Participant> findAll();
 
     /**
-     * TODO needed
      * find participannt by id
-     * @param id
+
+     * @param id participant id
      * @return pariticipant
      */
     public Participant findById(Long id);
 
+    /**
+     * find participants for club
+     *
+     * @param clubid club id
+     * @return list of participants assigned to club
+     */
     public List<ParticipantWithCompetitions> findByClub_id(Long clubid);
 
+    /**
+     * find participant with firstname, lastname and year
+     *
+     * @param last lastname
+     * @param first firstname
+     * @param year year
+     * @return participant
+     */
     public Participant findByLastnameAndFirstnameAndYear(String last, String first, Long year);
-
-    public Participant findByIdAndCompetition_Id(Long id, Long compId);
 
 }

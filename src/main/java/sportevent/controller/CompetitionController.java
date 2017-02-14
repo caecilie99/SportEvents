@@ -6,16 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sportevent.dao.CompetitionRepository;
-import sportevent.dao.CompetitionWithParticipants;
 import sportevent.dao.EventRepository;
-import sportevent.dao.EventWithImage;
 import sportevent.model.Competition;
 import sportevent.model.Event;
-import sportevent.model.Participant;
-import sportevent.model.Promoter;
 
 import java.net.URI;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,10 +33,11 @@ public class CompetitionController {
     /**
      * find all competitions for event
      *
+     * @param eventId id for event
      * @return list of competitions
      */
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<Competition> getCompetitions(@PathVariable("eventid") Long eventId){
+    public List<Competition> getCompetitionse(@PathVariable("eventid") Long eventId){
         List<Competition> comp =competitionRepository.findByEventId(eventId);
         return comp;
     }
@@ -49,13 +45,14 @@ public class CompetitionController {
     /**
      * create and save new competition, return new location for competition, identified by id
      *
-     * @param name
-     * @param description
-     * @param eventId
+     * @param name name of new competition
+     * @param description full description of new description
+     * @param eventId evend id of assigned event
+     * @param fee fee for competition
      * @return url with new id
      */
     @RequestMapping(path = "{name}", method = RequestMethod.POST)
-    public ResponseEntity<?> createEvent(@PathVariable("name") String name, @PathVariable("eventid") Long eventId, @RequestParam("description") String description, @RequestParam("fee") Double fee){
+    public ResponseEntity<?> createNewCompetition(@PathVariable("name") String name, @PathVariable("eventid") Long eventId, @RequestParam("description") String description, @RequestParam("fee") Double fee){
         Event event = eventRepository.findOne(eventId);
         Competition savedCompetition = competitionRepository.save(new Competition(name, description, fee, event));
         if (savedCompetition!=null){
@@ -68,16 +65,4 @@ public class CompetitionController {
             return (ResponseEntity<?>) ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    /**
-     * TODO check
-     *
-     * find and return all participnts for competitions
-     *
-     * @param eventId
-     * @return list of participants
-     */
-/*    @RequestMapping(path = "participants", method = RequestMethod.POST)
-    public List<Participant> getParticipantsForEvent(@PathVariable("eventid") Long eventId) {
-        return competitionRepository.f(eventId);
-    }*/
 }

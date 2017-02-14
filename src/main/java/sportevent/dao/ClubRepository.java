@@ -25,7 +25,7 @@ public interface ClubRepository extends CrudRepository<Club, Long> {
     /**
      * find club by id
      *
-     * @param id
+     * @param id id for requested club
      * @return club
      */
     public Club findById(Long id);
@@ -33,15 +33,15 @@ public interface ClubRepository extends CrudRepository<Club, Long> {
     /**
      * find club by name
      *
-     * @param name
+     * @param name name for requested club
      * @return club
      */
     public Club findByName(String name);
 
     /**
      * find club by assigned user_id
-     * @param userid
-     * @return
+     * @param userid user id of requested club
+     * @return club
      */
     public Club findByUser_id(Long userid);
 }

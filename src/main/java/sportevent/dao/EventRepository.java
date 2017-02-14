@@ -28,29 +28,22 @@ public interface EventRepository extends CrudRepository<Event, Long> {
     /**
      * find events from promoter
      *
-     * @param promoterid
+     * @param promoterid promoter id
      * @return list of events
      */
     public List<Event> findByPromoterId(@Param("promoterid") Long promoterid);
 
     /**
      * find event by id
-     * @param id
-     * @return event
+     * @param id id for requested event
+     * @return event with image
      */
     public EventWithImage findById(@Param("id") Long id);
 
     /**
-     * find event by id
-     * @param id
-     * @return event
-     */
-    public EventWithImage findOneProjectedBy(@Param("id") Long id);
-
-    /**
      * find event by name
-     * @param name
-     * @return
+     * @param name for requested event
+     * @return event with image
      */
     public EventWithImage findByName(@Param("name") String name);
 
