@@ -35,6 +35,8 @@ public interface ParticipantRepository extends CrudRepository<Participant, Long>
 
     public List<ParticipantWithCompetitions> findByClub_id(Long clubid);
 
+    public Participant findByLastnameAndFirstnameAndYear(String last, String first, Long year);
+
     public Participant findByIdAndCompetition_Id(Long id, Long compId);
 
 }

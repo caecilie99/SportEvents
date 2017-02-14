@@ -43,19 +43,26 @@ public class ParticipantController {
      * @param clubId
      * @param compId
      * @param participant
-     * @return
+     * @return ResponseEntitiy
      */
     @RequestMapping(path = "/event/{eventid}/{compid}/participants/{clubid}/add", method = RequestMethod.POST)
     public ResponseEntity<?> addParticipant(@PathVariable("eventid") Long eventId, @PathVariable("clubid") Long clubId,
                                             @PathVariable("compid") Long compId,
                                             @RequestBody Participant participant) {
+        // first- and lastname and year unique, should be extended with club_id, but doesn't work
+        Participant partExist = participantRepository.findByLastnameAndFirstnameAndYear(participant.getLastname(), participant.getFirstname(), participant.getYear());
         Club club = clubRepository.findOne(clubId);
-        Competition competition = competitionRepository.findOne(compId);
-        Set<Competition> competitionSet = new HashSet<Competition>();
-        competitionSet.add(competition);
 
-        participant.setClub(club);
-        participant.setCompetition(competitionSet);
+        if (partExist!=null)
+            participant = partExist;
+        else
+            participant.setClub(club);
+
+        // add competition to participant
+        Competition competition = competitionRepository.findOne(compId);
+        participant.getCompetition().add(competition);
+
+        // save participant
         participantRepository.save(participant);
 
         if (participant != null) {
@@ -66,6 +73,10 @@ public class ParticipantController {
 
     }
 
+    /**
+     * Delete participant
+     * @param id
+     */
     @RequestMapping(path = "/participant/{id}", method = RequestMethod.DELETE)
     public void deleteCompetitionForParticipant(@PathVariable("id") Long id) {
         Participant part = participantRepository.findOne(id);

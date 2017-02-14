@@ -62,6 +62,11 @@ public class UserController {
      * @param firstname
      * @param lastname
      * @param email
+     * @param zipcode
+     * @param city
+     * @param adress
+     * @param phone
+     * @return ResponseEntity
      */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
     public ResponseEntity<?>  updateUser(@PathVariable("id") Long id, @RequestParam(value = "firstname", required = false) String firstname,
@@ -99,10 +104,10 @@ public class UserController {
     }
 
     /**
-     * find user by username
+     * find club by username
      *
      * @param name
-     * @return
+     * @return club for assigned user
      */
     @RequestMapping(path = "{name}/club", method = RequestMethod.GET)
     public Club findClubByUser(@PathVariable("name") String name){
