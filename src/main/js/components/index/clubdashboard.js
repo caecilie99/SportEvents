@@ -70,9 +70,9 @@ export default class ClubDashboard extends React.Component {
      * @param participant
      */
     removeParticipant(participant){
-        console.log(participant.lastname,participant.firstname,participant.competition[0].name);
+        console.log(participant.lastname,participant.firstname,participant.competition[0].id);
         if (Auth.isUserAuthenticated()) {
-            fetch('/participant/'+participant.id, {
+            fetch('/participant/'+participant.id+'/'+participant.competition[0].id, {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json',

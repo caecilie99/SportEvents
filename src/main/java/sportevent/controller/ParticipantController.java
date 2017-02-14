@@ -78,10 +78,23 @@ public class ParticipantController {
      * @param id
      */
     @RequestMapping(path = "/participant/{id}", method = RequestMethod.DELETE)
-    public void deleteCompetitionForParticipant(@PathVariable("id") Long id) {
+    public void deleteParticipant(@PathVariable("id") Long id) {
         Participant part = participantRepository.findOne(id);
         //Competition test = competitionRepository.findByIdAndParticipants_Id(id, pid);
         participantRepository.delete(part);
+    }
+
+    /**
+     * Delete participant
+     * @param id
+     */
+    @RequestMapping(path = "/participant/{id}/{compid}", method = RequestMethod.DELETE)
+    public void deleteCompetitionForParticipant(@PathVariable("id") Long id, @PathVariable("compid") Long compid) {
+        Participant part = participantRepository.findOne(id);
+        Competition comp = competitionRepository.findOne(compid);
+        part.getCompetition().remove(comp);
+        //Competition test = competitionRepository.findByIdAndParticipants_Id(id, pid);
+        participantRepository.save(part);
     }
 
 }
